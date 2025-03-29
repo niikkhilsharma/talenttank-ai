@@ -10,7 +10,6 @@ import NavbarCenter from './navbar-center'
 export async function Navbar() {
 	const session = await auth()
 	const user = session?.user
-	console.log(user)
 
 	return (
 		<div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">

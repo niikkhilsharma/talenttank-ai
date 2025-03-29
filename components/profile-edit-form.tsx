@@ -45,7 +45,7 @@ const formSchema = z.object({
 		required_error: 'Date of birth is required.',
 	}),
 	jobTitle: z.string().min(2, {
-		message: 'Job title must be at least 2 characters.',
+		message: 'Professional Occupation must be at least 2 characters.',
 	}),
 	company: z.string().min(2, {
 		message: 'Company name must be at least 2 characters.',
@@ -337,9 +337,9 @@ export function ProfileEditForm({ user }: { user: UserData }) {
 						name="jobTitle"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Job Title</FormLabel>
+								<FormLabel>Professional Occupation</FormLabel>
 								<FormControl>
-									<Input placeholder="Software Engineer" {...field} />
+									<Input placeholder="Student" {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>

@@ -42,7 +42,7 @@ const formSchema = z.object({
 		required_error: 'Date of birth is required.',
 	}),
 	jobTitle: z.string().min(2, {
-		message: 'Job title must be at least 2 characters.',
+		message: 'Professional occupation must be at least 2 characters.',
 	}),
 	company: z.string().min(2, {
 		message: 'Company name must be at least 2 characters.',
@@ -106,7 +106,7 @@ export function RegistrationForm() {
 			// Add all form fields to FormData
 			Object.entries(values).forEach(([key, value]) => {
 				if (key === 'dateOfBirth') {
-					formData.append(key, value.toISOString())
+					formData.append(key, value?.toString())
 				} else if (key === 'profilePicture' && value instanceof File) {
 					formData.append(key, value)
 				} else if (value !== undefined && value !== null) {
@@ -305,7 +305,7 @@ export function RegistrationForm() {
 						name="jobTitle"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Job Title</FormLabel>
+								<FormLabel>Professional Occupation</FormLabel>
 								<FormControl>
 									<Input placeholder="Software Engineer" {...field} />
 								</FormControl>

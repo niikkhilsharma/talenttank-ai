@@ -128,7 +128,6 @@ async function SaveNormalAnswerToDB(question: Question, userId: string) {
 	if (!userId) {
 		return NextResponse.json({ success: false, message: 'User ID is missing' })
 	}
-	console.log(userId)
 
 	const formattedQuestions = z.array(questionSchema).parse(question)
 

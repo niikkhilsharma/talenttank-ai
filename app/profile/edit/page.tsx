@@ -6,6 +6,7 @@ import prisma from '@/lib/prisma/prisma'
 export default async function ProfileEditPage() {
 	const session = await auth()
 	console.log(session)
+
 	if (!session?.user) {
 		redirect('/login')
 	}

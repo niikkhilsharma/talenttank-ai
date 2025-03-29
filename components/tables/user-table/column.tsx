@@ -35,7 +35,7 @@ export const columns: ColumnDef<User>[] = [
 			return new Date(row.original.dateOfBirth).toLocaleDateString()
 		},
 	},
-	{ accessorKey: 'jobTitle', header: 'Job Title' },
+	{ accessorKey: 'jobTitle', header: 'Professional Occupation' },
 	{ accessorKey: 'company', header: 'Company' },
 	{
 		id: 'actions',
