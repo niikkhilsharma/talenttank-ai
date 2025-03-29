@@ -1,0 +1,162 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+model User {
+  id                     String                   @id @default(cuid())
+  firstName              String
+  lastName               String
+  email                  String                   @unique
+  password               String
+  role                   UserRole
+  countryCode            String
+  phoneNumber            String                   @unique
+  avatarUrl              String?
+  dateOfBirth            DateTime
+  jobTitle               String?
+  company                String?
+  yearsOfExperience      Int?
+  linkedinUrl            String?
+  githubUrl              String?
+  twitterUrl             String?
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+  Answers                Answers[]
+  AIQuestionnaireAnswers AIQuestionnaireAnswers[]
+}
+
+enum QuestionType {
+  multiple_choice
+  input_text
+}
+
+// model Questionnaire {
+//   id          Int       @id @default(autoincrement())
+//   title       String
+//   description String?
+//   questions   Json
+//   Answers     Answers[]
+// }
+
+// model category {
+//   id        Int        @id @default(autoincrement())
+//   category  String
+//   questions question[]
+// }
+
+// model question {
+//   id          Int          @id @default(autoincrement())
+//   question    String
+//   type        QuestionType
+//   options     String[]
+//   placeholder String?
+
+//   categoryId Int
+//   category   category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+//   questionnaireId Int
+//   questionnaire   questionnaire @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
+//   Answers         Answers?      @relation(fields: [answersId], references: [id])
+//   answersId       Int?
+//   Answer          Answer[]
+// }
+
+// model questionnaire {
+//   id             Int        @id @default(autoincrement())
+//   totalQuestions Int
+//   questions      question[]
+//   Answers        Answers[]
+// }
+
+// model Answer {
+//   id         Int      @id @default(autoincrement())
+//   answer     String
+//   questionId Int
+//   question   question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+//   answersId  Int
+//   Answers    Answers  @relation(fields: [answersId], references: [id], onDelete: Cascade)
+//   createdAt  DateTime @default(now())
+//   updatedAt  DateTime @updatedAt
+// }
+
+// model Answers {
+//   id              Int           @id @default(autoincrement())
+//   userId          String
+//   questionnaireId Int
+//   answers         Answer[]
+//   createdAt       DateTime      @default(now())
+//   updatedAt       DateTime      @updatedAt
+//   user            User          @relation(fields: [userId], references: [id], onDelete: Restrict)
+//   questionnaire   questionnaire @relation(fields: [questionnaireId], references: [id], onDelete: Restrict)
+//   question        question[]
+// }
+
+model Answers {
+  id      Int    @id @default(autoincrement())
+  answers Json[]
+
+  userId String
+  User   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+enum AIQuestionCategoryEnum {
+  predictive_index
+  emotional_intelligence
+}
+
+model AIQuestion {
+  id                Int                    @id @default(autoincrement())
+  question          String
+  type              QuestionType
+  options           String[]
+  placeholder       String?
+  category          AIQuestionCategoryEnum
+  aIQuestionnaireId Int
+  AIQuestionnaire   AIQuestionnaire        @relation(fields: [aIQuestionnaireId], references: [id], onDelete: Cascade)
+}
+
+model AIQuestionnaire {
+  id                     Int                      @id @default(autoincrement())
+  totalQuestions         Int
+  questions              AIQuestion[]
+  AIQuestionnaireAnswers AIQuestionnaireAnswers[]
+}
+
+model AIQuestionnaireAnswers {
+  id                           Int      @id @default(autoincrement())
+  answersWithQuestions         Json[]
+  averagePredictiveIndex       Int
+  averageEmotionalIntelligence Int
+  userSummary                  String
+  improvementSuggestions       String
+  overallSuitability           String
+  areasForImprovement          String
+  feedback                     String
+  strengths                    String[]
+  candidateOverview            String
+
+  userId String
+  User   User?  @relation(fields: [userId], references: [id])
+
+  aiQuestionnaireId Int
+  AIQuestionnaire   AIQuestionnaire? @relation(fields: [aiQuestionnaireId], references: [id])
+  createdAt         DateTime         @default(now())
+}

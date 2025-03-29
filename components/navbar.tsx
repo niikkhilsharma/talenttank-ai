@@ -1,0 +1,45 @@
+import { Brain } from 'lucide-react'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import MobileNav from './mobile-nav'
+import { auth } from '@/auth'
+
+import NavbarProfileDropdown from './navbar-profile-dropdown'
+import NavbarCenter from './navbar-center'
+
+export async function Navbar() {
+	const session = await auth()
+	const user = session?.user
+	console.log(user)
+
+	return (
+		<div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+			<div className="container mx-auto  px-4 z-40 w-full">
+				<div className="container mx-auto  flex h-16 items-center justify-between">
+					<Link href={'/'} className="flex items-center gap-2">
+						<Brain className="h-6 w-6 text-primary" />
+						<span className="text-xl font-bold">QuizGenius</span>
+					</Link>
+
+					<NavbarCenter />
+
+					<div className="flex items-center gap-4">
+						{!user && (
+							<Link href="/login" className="hidden md:inline-flex text-sm font-medium transition-colors hover:text-primary">
+								Log in
+							</Link>
+						)}
+
+						<Button asChild>
+							<Link href="/user/questionnaire/original">Get Started</Link>
+						</Button>
+
+						{user && <NavbarProfileDropdown />}
+
+						<MobileNav />
+					</div>
+				</div>
+			</div>
+		</div>
+	)
+}
