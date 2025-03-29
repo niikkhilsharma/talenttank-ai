@@ -1,5 +1,4 @@
 'use client'
-
 import { ColumnDef } from '@tanstack/react-table'
 import type { User } from '@prisma/client'
 import { MoreHorizontal } from 'lucide-react'
@@ -10,10 +9,8 @@ import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
-	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import Link from 'next/link'
 
 export const columns: ColumnDef<User>[] = [
 	{ accessorKey: 'id', header: 'User ID' },

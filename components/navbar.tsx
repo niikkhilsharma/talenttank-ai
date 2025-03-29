@@ -1,7 +1,6 @@
 import { Brain } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import MobileNav from './mobile-nav'
 import { auth } from '@/auth'
 
 import NavbarProfileDropdown from './navbar-profile-dropdown'
@@ -34,8 +33,6 @@ export async function Navbar() {
 						</Button>
 
 						{user && <NavbarProfileDropdown />}
-
-						<MobileNav />
 					</div>
 				</div>
 			</div>
