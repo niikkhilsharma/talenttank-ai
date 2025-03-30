@@ -34,14 +34,14 @@ export default async function ReportPage() {
 									<span>Predictive Index</span>
 									<span>{aiAnalysis?.averagePredictiveIndex}/5</span>
 								</div>
-								<Progress max={5} value={(aiAnalysis?.averagePredictiveIndex! / 5) * 100} className="h-2" />
+								<Progress max={5} value={(aiAnalysis.averagePredictiveIndex / 5) * 100} className="h-2" />
 							</div>
 							<div>
 								<div className="flex justify-between mb-1">
 									<span>Emotional Intelligence</span>
 									<span>{aiAnalysis?.averageEmotionalIntelligence}/5</span>
 								</div>
-								<Progress max={5} value={(aiAnalysis?.averageEmotionalIntelligence! / 5) * 100} className="h-2" />
+								<Progress max={5} value={(aiAnalysis.averageEmotionalIntelligence / 5) * 100} className="h-2" />
 							</div>
 						</CardContent>
 						<CardFooter>

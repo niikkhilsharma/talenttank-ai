@@ -85,6 +85,7 @@ export async function POST(request: NextRequest) {
 					.end(buffer)
 			})
 
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			profilePictureUrl = (uploadResponse as any).secure_url
 		}
 

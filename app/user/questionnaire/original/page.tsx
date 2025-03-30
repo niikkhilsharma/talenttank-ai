@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
-import { ArrowLeft, ArrowRight, CheckCircle, Loader2, Clock, AlertTriangle, Loader } from 'lucide-react'
+import { ArrowLeft, ArrowRight, CheckCircle, Loader2, Clock, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -246,7 +246,7 @@ export default function QuestionnairePage() {
 								<CheckCircle className="h-12 w-12 text-primary" />
 							</div>
 							<p className="text-center text-muted-foreground">
-								We'll analyze your responses and create personalized contests tailored to your expertise and learning style.
+								We&apos;ll analyze your responses and create personalized contests tailored to your expertise and learning style.
 							</p>
 						</CardContent>
 						<CardFooter className="flex justify-center">
@@ -268,7 +268,7 @@ export default function QuestionnairePage() {
 						<DialogTitle>Are you ready to attempt the questionnaire?</DialogTitle>
 						<DialogDescription>
 							<span className="block w-full">
-								Click "Yes" to start. The timer will begin once you proceed. <br />
+								Click &quot;Yes&quot; to start. The timer will begin once you proceed. <br />
 								<span>Time remaining: {formatTime(timeRemaining)}</span>
 							</span>
 						</DialogDescription>

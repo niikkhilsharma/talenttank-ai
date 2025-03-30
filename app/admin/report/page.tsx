@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 
 export default function UserResponsePage() {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const [userResponses, setUserResponses] = useState<any[]>([])
 	const [loading, setLoading] = useState(true)
 	const [showMoreState, setShowMoreState] = useState<Record<string, boolean>>({})
@@ -65,6 +66,7 @@ export default function UserResponsePage() {
 							</div>
 
 							<div className="flex gap-4 flex-wrap">
+								{/* @ts-expect-error  //ignore */}
 								{displayedResponses.map(item => (
 									<Card key={item.id} className="max-w-sm w-full">
 										<CardHeader>
@@ -79,14 +81,14 @@ export default function UserResponsePage() {
 													<span>Predictive Index</span>
 													<span>{item.averagePredictiveIndex}/5</span>
 												</div>
-												<Progress max={5} value={(item?.averagePredictiveIndex! / 5) * 100} className="h-2" />
+												<Progress max={5} value={(item.averagePredictiveIndex / 5) * 100} className="h-2" />
 											</div>
 											<div className="w-full">
 												<div className="flex justify-between mb-1">
 													<span>Emotional Intelligence</span>
 													<span>{item?.averageEmotionalIntelligence}/5</span>
 												</div>
-												<Progress max={5} value={(item?.averageEmotionalIntelligence! / 5) * 100} className="h-2" />
+												<Progress max={5} value={(item.averageEmotionalIntelligence / 5) * 100} className="h-2" />
 											</div>
 											<Link href={`/admin/report/${user?.id}`} className="text-sm text-blue-500 hover:underline">
 												View full report

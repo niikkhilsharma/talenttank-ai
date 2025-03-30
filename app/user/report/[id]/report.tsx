@@ -8,13 +8,7 @@ import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Separator } from '@/components/ui/separator'
 
-const ReportDescription = ({
-	assessmentId,
-	aiAnalysis,
-}: {
-	assessmentId: string
-	aiAnalysis: AIQuestionnaireAnswers | null
-}) => {
+const ReportDescription = ({ assessmentId, aiAnalysis }: { assessmentId: string; aiAnalysis: AIQuestionnaireAnswers }) => {
 	console.log(aiAnalysis)
 	const router = useRouter()
 
@@ -79,14 +73,14 @@ const ReportDescription = ({
 								<span>Predictive Index</span>
 								<span>{aiAnalysis?.averagePredictiveIndex}/5</span>
 							</div>
-							<Progress max={5} value={(aiAnalysis?.averagePredictiveIndex! / 5) * 100} className="h-2" />
+							<Progress max={5} value={(aiAnalysis.averagePredictiveIndex! / 5) * 100} className="h-2" />
 						</div>
 						<div>
 							<div className="flex justify-between mb-1">
 								<span>Emotional Intelligence</span>
 								<span>{aiAnalysis?.averageEmotionalIntelligence}/5</span>
 							</div>
-							<Progress max={5} value={(aiAnalysis?.averageEmotionalIntelligence! / 5) * 100} className="h-2" />
+							<Progress max={5} value={(aiAnalysis.averageEmotionalIntelligence / 5) * 100} className="h-2" />
 						</div>
 					</CardContent>
 				</Card>

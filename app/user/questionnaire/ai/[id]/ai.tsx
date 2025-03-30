@@ -32,7 +32,7 @@ export default function AiQuestion({
 	const [success, setSuccess] = useState(false)
 	const [timeRemaining, setTimeRemaining] = useState(TIMER_DURATION)
 	const [showTimeWarning, setShowTimeWarning] = useState(false)
-	const [analysisResponse, setAnalysisResponse] = useState<any>(null)
+	const [analysisResponse, setAnalysisResponse] = useState(null)
 
 	const totalQuestions = questions.length
 	const currentQuestion = questions[currentStep]
@@ -207,12 +207,13 @@ export default function AiQuestion({
 								<CheckCircle className="h-12 w-12 text-primary" />
 							</div>
 							<p className="text-center text-muted-foreground">
-								We've analyzed your responses and created personalized report tailored to your expertise and learning style. You can
-								view the report below.
+								We&apos;ve analyzed your responses and created personalized report tailored to your expertise and learning style. You
+								can view the report below.
 							</p>
 						</CardContent>
 						<CardFooter className="flex justify-center">
 							<Button asChild>
+								{/* @ts-expect-error  //ignore */}
 								<Link href={`/user/report/${analysisResponse.savedAnswers.id}`}>View Report</Link>
 							</Button>
 						</CardFooter>
@@ -230,7 +231,7 @@ export default function AiQuestion({
 						<DialogTitle>Are you ready to attempt the questionnaire?</DialogTitle>
 						<DialogDescription>
 							<span className="block w-full">
-								Click "Yes" to start. The timer will begin once you proceed. <br />
+								Click &quot;Yes&quot; to start. The timer will begin once you proceed. <br />
 								<span>Time remaining: {formatTime(timeRemaining)}</span>
 							</span>
 						</DialogDescription>

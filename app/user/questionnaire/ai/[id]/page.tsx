@@ -22,7 +22,7 @@ export default async function AiQuestionnairePage({ params }: { params: Promise<
 
 	return (
 		<div>
-			<AiQuestion questions={aiQuestionnaire?.questions!} aIquestionnaireId={id} />
+			<AiQuestion questions={aiQuestionnaire.questions!} aIquestionnaireId={id} />
 		</div>
 	)
 }

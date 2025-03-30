@@ -11,6 +11,8 @@ cloudinary.config({
 	api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
+type uploadResponse = { secure_url: string } | undefined
+
 // Define schema for validation
 const updateProfileSchema = z.object({
 	id: z.string(),
@@ -89,7 +91,7 @@ export async function PUT(request: NextRequest) {
 			const arrayBuffer = await profilePicture.arrayBuffer()
 			const buffer = Buffer.from(arrayBuffer)
 
-			const uploadResponse = await new Promise((resolve, reject) => {
+			const uploadResponse: uploadResponse = await new Promise((resolve, reject) => {
 				cloudinary.uploader
 					.upload_stream({ resource_type: 'image' }, (error, result) => {
 						if (error) reject(error)
@@ -98,10 +100,11 @@ export async function PUT(request: NextRequest) {
 					.end(buffer)
 			})
 
-			profilePictureUrl = (uploadResponse as any).secure_url
+			profilePictureUrl = uploadResponse?.secure_url
 		}
 
 		// Prepare update data
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const updateData: any = {
 			firstName: validatedData.firstName,
 			lastName: validatedData.lastName,

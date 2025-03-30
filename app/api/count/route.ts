@@ -177,6 +177,13 @@ async function getTokenCountSecond() {
 }
 
 export async function GET() {
-	return await getTokenCountFirst()
-	// return NextResponse.json({ success: true, message: 'This api route is used to calculate the token count' })
+	const firstCount = await getTokenCountFirst()
+	const secondCount = await getTokenCountSecond()
+
+	return NextResponse.json({
+		success: true,
+		firstCount,
+		secondCount,
+		message: 'This api route is used to calculate the token count',
+	})
 }

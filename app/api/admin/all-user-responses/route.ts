@@ -23,6 +23,6 @@ export async function GET() {
 
 		return NextResponse.json(Object.values(groupedResponses))
 	} catch (error) {
-		return NextResponse.json({ error: 'Failed to fetch user responses' }, { status: 500 })
+		return NextResponse.json({ message: 'Failed to fetch user responses', error }, { status: 500 })
 	}
 }

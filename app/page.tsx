@@ -1,17 +1,17 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Brain, BarChart3, Users, Clock, Award, CheckCircle2, Menu, X } from 'lucide-react'
+import { Brain, BarChart3, Users, Clock, Award, CheckCircle2 } from 'lucide-react'
 import TestimonialCard from '@/components/testimonial-card'
 import FeatureCard from '@/components/feature-card'
 import PricingCard from '@/components/pricing-card'
 
 export default function LandingPage() {
-	const companyLogos = [
-		'https://logowik.com/content/uploads/images/iima-indian-institute-of-management-ahmedabad-new-20227032.logowik.com.webp',
-		'https://upload.wikimedia.org/wikipedia/en/thumb/6/69/IIT_Madras_Logo.svg/1200px-IIT_Madras_Logo.svg.png',
-		'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTI2koILJtfnXxr42PK93KKBsbYvn-nrcB2Tw&s',
-	]
+	// const companyLogos = [
+	// 	'https://logowik.com/content/uploads/images/iima-indian-institute-of-management-ahmedabad-new-20227032.logowik.com.webp',
+	// 	'https://upload.wikimedia.org/wikipedia/en/thumb/6/69/IIT_Madras_Logo.svg/1200px-IIT_Madras_Logo.svg.png',
+	// 	'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTI2koILJtfnXxr42PK93KKBsbYvn-nrcB2Tw&s',
+	// ]
 
 	return (
 		<div className="flex min-h-screen flex-col">
@@ -49,6 +49,7 @@ export default function LandingPage() {
 						</div>
 					</div>
 				</section>
+				{/* <PaymentButton /> */}
 
 				{/* Trusted By Section */}
 				{/* <section className="w-full py-12 md:py-24 lg:py-32 bg-muted/50">
@@ -182,7 +183,7 @@ export default function LandingPage() {
 							<div className="space-y-2">
 								<h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Simple, Transparent Pricing</h2>
 								<p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-									Choose the plan that's right for you and start improving today.
+									Choose the plan that&apos;s right for you and start improving today.
 								</p>
 							</div>
 						</div>
