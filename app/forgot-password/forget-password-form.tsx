@@ -14,9 +14,7 @@ export default function ForgotPasswordForm() {
 					<Input type="email" id="email" placeholder="Email" />
 				</div>
 				<div className="flex items-center justify-between">
-					<Button type="submit" className="w-full">
-						Send reset link
-					</Button>
+					<Button className="w-full">Send reset link</Button>
 				</div>
 			</form>
 		</div>
