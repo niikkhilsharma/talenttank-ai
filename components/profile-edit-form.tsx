@@ -129,7 +129,8 @@ export function ProfileEditForm({ user }: { user: UserData }) {
 				if (key === 'dateOfBirth') {
 					// @ts-expect-error //ignore
 					formData.append(key, value.toISOString())
-				} else if (key === 'profilePicture' && value instanceof File) {
+				} else if (key === 'profilePicture') {
+					// @ts-expect-error //ignore
 					formData.append(key, value)
 				} else if (key === 'password' && value === '') {
 					// Skip empty password (no change)
