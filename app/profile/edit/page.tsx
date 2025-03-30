@@ -1,6 +1,6 @@
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
-import { ProfileEditForm } from '@/components/profile-edit-form'
+// import { ProfileEditForm } from '@/components/profile-edit-form'
 import prisma from '@/lib/prisma/prisma'
 
 export default async function ProfileEditPage() {
@@ -43,7 +43,7 @@ export default async function ProfileEditPage() {
 					<h1 className="text-3xl font-bold">Edit Profile</h1>
 					<p className="text-gray-500 dark:text-gray-400">Update your profile information</p>
 				</div>
-				<ProfileEditForm user={user} />
+				{/* <ProfileEditForm user={user} /> */}
 			</div>
 		</div>
 	)
