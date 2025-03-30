@@ -1,7 +1,7 @@
 import { RegistrationForm } from '@/components/registration-form'
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 

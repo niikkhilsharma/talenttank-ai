@@ -18,7 +18,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Country, CountryDropdown } from './ui/country-dropdown'
+import { CountryDropdown } from './ui/country-dropdown'
 
 const formSchema = z.object({
 	firstName: z.string().min(2, {
@@ -69,7 +69,6 @@ const formSchema = z.object({
 export function RegistrationForm() {
 	const router = useRouter()
 	const [isLoading, setIsLoading] = useState(false)
-	const [selectedCountry, setSelectedCountry] = React.useState<Country | null>(null)
 	const [profilePicture, setProfilePicture] = useState<string | null>(null)
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -106,9 +105,9 @@ export function RegistrationForm() {
 				}
 			})
 
-			for (let pair of formData.entries()) {
-				console.log(`${pair[0]}:`, pair[1])
-			}
+			// for (let pair of formData.entries()) {
+			// 	console.log(`${pair[0]}:`, pair[1])
+			// }
 
 			const response = await fetch('/api/auth/register', {
 				method: 'POST',
