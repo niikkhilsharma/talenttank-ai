@@ -64,13 +64,6 @@ const formSchema = z.object({
 		})
 		.optional()
 		.or(z.literal('')),
-	twitterUrl: z
-		.string()
-		.url({
-			message: 'Please enter a valid Twitter URL.',
-		})
-		.optional()
-		.or(z.literal('')),
 	profilePicture: z.instanceof(File).optional(),
 })
 
@@ -93,7 +86,6 @@ export function RegistrationForm() {
 			yearsOfExperience: '',
 			linkedinUrl: '',
 			githubUrl: '',
-			twitterUrl: '',
 		},
 	})
 
@@ -364,20 +356,6 @@ export function RegistrationForm() {
 							<FormLabel>GitHub Profile URL</FormLabel>
 							<FormControl>
 								<Input placeholder="https://github.com/username" {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-
-				<FormField
-					control={form.control}
-					name="twitterUrl"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Twitter Profile URL</FormLabel>
-							<FormControl>
-								<Input placeholder="https://twitter.com/username" {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
