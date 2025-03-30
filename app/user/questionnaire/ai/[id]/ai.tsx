@@ -116,7 +116,7 @@ export default function AiQuestion({
 
 	// Timer effect
 	useEffect(() => {
-		if (!hasAgreed || success || timeRemaining <= 0) return
+		if (!hasAgreed || success || timeRemaining <= 0 || isSubmitting) return
 
 		const timer = setInterval(() => {
 			setTimeRemaining(prev => {
@@ -130,7 +130,7 @@ export default function AiQuestion({
 		}, 1000)
 
 		return () => clearInterval(timer)
-	}, [timeRemaining, success, submitForm, hasAgreed])
+	}, [timeRemaining, success, submitForm, hasAgreed, isSubmitting])
 
 	// Warning dialog effect
 	useEffect(() => {
@@ -193,7 +193,7 @@ export default function AiQuestion({
 	}
 
 	// Render the success state
-	if (success) {
+	if (success || isSubmitting) {
 		return (
 			<div className="flex min-h-screen flex-col">
 				<main className="flex-1 flex items-center justify-center p-4">
@@ -212,10 +212,19 @@ export default function AiQuestion({
 							</p>
 						</CardContent>
 						<CardFooter className="flex justify-center">
-							<Button asChild>
-								{/* @ts-expect-error  //ignore */}
-								<Link href={`/user/report/${analysisResponse.savedAnswers.id}`}>View Report</Link>
-							</Button>
+							{success ? (
+								<Button asChild>
+									{/* @ts-expect-error  //ignore */}
+									<Link href={`/user/report/${analysisResponse.savedAnswers.id}`}>View Report</Link>
+								</Button>
+							) : (
+								<div className="flex justify-center items-center flex-col">
+									<Button disabled>
+										Please Wait <Loader2 className="h-4 w-4 animate-spin" />
+									</Button>
+									<p className="text-muted-foreground text-sm">Kindly wait while we are analyzing your answers.</p>
+								</div>
+							)}
 						</CardFooter>
 					</Card>
 				</main>
@@ -226,7 +235,7 @@ export default function AiQuestion({
 	return (
 		<div className="flex min-h-screen flex-col">
 			<Dialog open={!hasAgreed}>
-				<DialogContent>
+				<DialogContent showCross={false}>
 					<DialogHeader>
 						<DialogTitle>Are you ready to attempt the questionnaire?</DialogTitle>
 						<DialogDescription>
@@ -246,7 +255,7 @@ export default function AiQuestion({
 			</Dialog>
 
 			<Dialog open={showTimeWarning} onOpenChange={setShowTimeWarning}>
-				<DialogContent>
+				<DialogContent showCross={false}>
 					<DialogHeader>
 						<DialogTitle className="flex items-center gap-2">
 							<AlertTriangle className="h-5 w-5 text-destructive" />

@@ -12,7 +12,7 @@ export async function Navbar() {
 
 	return (
 		<div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-			<div className="container mx-auto  px-4 z-40 w-full">
+			<div className="px-4 mx-auto z-40 w-full">
 				<div className="container mx-auto  flex h-16 items-center justify-between">
 					<Link href={'/'} className="flex items-center gap-2">
 						<Brain className="h-6 w-6 text-primary" />

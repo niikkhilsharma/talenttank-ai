@@ -1,6 +1,9 @@
 import { RegistrationForm } from '@/components/registration-form'
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
+import { Button, buttonVariants } from '@/components/ui/button'
+import Link from 'next/link'
+import { cn } from '@/lib/utils'
 
 export default async function RegisterPage() {
 	const session = await auth()
@@ -18,6 +21,9 @@ export default async function RegisterPage() {
 					<p className="text-gray-500 dark:text-gray-400">Fill in the form below to create your account</p>
 				</div>
 				<RegistrationForm />
+				<Link href={'/login'} className={cn(buttonVariants({ variant: 'outline' }), 'w-full')}>
+					Login
+				</Link>
 			</div>
 		</div>
 	)

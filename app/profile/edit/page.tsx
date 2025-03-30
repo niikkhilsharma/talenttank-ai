@@ -8,7 +8,7 @@ export default async function ProfileEditPage() {
 	console.log(session)
 
 	if (!session?.user) {
-		redirect('/login')
+		redirect('/register')
 	}
 
 	// Fetch the user's data from the database

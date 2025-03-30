@@ -10,14 +10,10 @@ export default async function RootLayout({
 	const user = session?.user
 
 	if (!user) {
-		redirect('/login')
+		redirect('/register')
 	} else if (user.role !== 'USER') {
 		redirect('/admin')
 	}
 
-	return (
-		<div>
-			<div>{children}</div>
-		</div>
-	)
+	return <div>{children}</div>
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import type React from 'react'
+import React from 'react'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -18,6 +18,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Country, CountryDropdown } from './ui/country-dropdown'
 
 const formSchema = z.object({
 	firstName: z.string().min(2, {
@@ -32,9 +33,7 @@ const formSchema = z.object({
 	password: z.string().min(8, {
 		message: 'Password must be at least 8 characters.',
 	}),
-	countryCode: z.string().min(1, {
-		message: 'Country code is required.',
-	}),
+	countryCode: z.string({ required_error: 'Country code is required.' }),
 	phoneNumber: z.string().min(5, {
 		message: 'Phone number must be at least 5 characters.',
 	}),
@@ -60,7 +59,7 @@ const formSchema = z.object({
 	githubUrl: z
 		.string()
 		.url({
-			message: 'Please enter a valid GitHub URL.',
+			message: 'Please enter a valid GitHub URL or Resume link.',
 		})
 		.optional()
 		.or(z.literal('')),
@@ -70,6 +69,7 @@ const formSchema = z.object({
 export function RegistrationForm() {
 	const router = useRouter()
 	const [isLoading, setIsLoading] = useState(false)
+	const [selectedCountry, setSelectedCountry] = React.useState<Country | null>(null)
 	const [profilePicture, setProfilePicture] = useState<string | null>(null)
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -106,6 +106,10 @@ export function RegistrationForm() {
 				}
 			})
 
+			for (let pair of formData.entries()) {
+				console.log(`${pair[0]}:`, pair[1])
+			}
+
 			const response = await fetch('/api/auth/register', {
 				method: 'POST',
 				body: formData,
@@ -123,9 +127,9 @@ export function RegistrationForm() {
 			router.push('/login')
 		} catch (error) {
 			console.error('Registration error:', error)
-			toast('Registration failed', {
-				// description: error instanceof Error ? error.message : 'Something went wrong. Please try again.',
-				description: 'Something went wrong. Please try again.',
+			toast.error('Registration failed', {
+				description: error instanceof Error ? error.message : 'Something went wrong. Please try again.',
+				// description: 'Something went wrong. Please try again.',
 			})
 		} finally {
 			setIsLoading(false)
@@ -234,14 +238,19 @@ export function RegistrationForm() {
 						name="countryCode"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Country Code</FormLabel>
-								<FormControl>
-									<Input placeholder="+1" {...field} />
-								</FormControl>
+								<FormLabel>Country</FormLabel>
+								<CountryDropdown
+									placeholder="Country"
+									defaultValue={field.value}
+									onChange={country => {
+										field.onChange(country.countryCallingCodes[0])
+									}}
+								/>
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
+
 					<FormField
 						control={form.control}
 						name="phoneNumber"
@@ -353,7 +362,7 @@ export function RegistrationForm() {
 					name="githubUrl"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>GitHub Profile URL</FormLabel>
+							<FormLabel>GitHub Profile URL / Resume Link</FormLabel>
 							<FormControl>
 								<Input placeholder="https://github.com/username" {...field} />
 							</FormControl>

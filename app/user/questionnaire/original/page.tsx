@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { ArrowLeft, ArrowRight, CheckCircle, Loader2, Clock, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
@@ -12,7 +12,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { toast } from 'sonner'
 import { Question } from '@/types/questions'
-import { cn } from '@/lib/utils'
+import { useRouter } from 'next/navigation'
 
 // The questionnaire data
 const questionnaireData: Question[] = [
@@ -57,12 +57,20 @@ const questionnaireData: Question[] = [
 		],
 		category: 'behavior',
 	},
+	{
+		id: 5,
+		question: 'Which is position are you applying for?',
+		type: 'input_text',
+		placeholder: 'Enter your position...',
+		category: 'personal_information',
+	},
 ]
 
 // Timer duration in seconds (10 minutes = 600 seconds)
 const TIMER_DURATION = 600
 
 export default function QuestionnairePage() {
+	const router = useRouter()
 	const [hasAgreed, setHasAgreed] = useState(false)
 	const [currentStep, setCurrentStep] = useState(0)
 	const [answers, setAnswers] = useState<Record<number, string>>({})
@@ -155,7 +163,7 @@ export default function QuestionnairePage() {
 
 	// Timer effect
 	useEffect(() => {
-		if (!hasAgreed || success || timeRemaining <= 0) return
+		if (!hasAgreed || success || timeRemaining <= 0 || isSubmitting) return
 
 		const timer = setInterval(() => {
 			setTimeRemaining(prev => {
@@ -169,7 +177,7 @@ export default function QuestionnairePage() {
 		}, 1000)
 
 		return () => clearInterval(timer)
-	}, [timeRemaining, success, submitForm, hasAgreed])
+	}, [timeRemaining, success, submitForm, hasAgreed, isSubmitting])
 
 	// Warning dialog effect
 	useEffect(() => {
@@ -232,7 +240,7 @@ export default function QuestionnairePage() {
 	}
 
 	// Render the success state
-	if (success) {
+	if (success || isSubmitting) {
 		return (
 			<div className="flex min-h-screen flex-col">
 				<main className="flex-1 flex items-center justify-center p-4">
@@ -250,9 +258,18 @@ export default function QuestionnairePage() {
 							</p>
 						</CardContent>
 						<CardFooter className="flex justify-center">
-							<Button asChild>
-								<Link href={`/user/questionnaire/ai/${aiQuestionnaireId}`}>Next Part</Link>
-							</Button>
+							{success ? (
+								<Button asChild>
+									<Link href={`/user/questionnaire/ai/${aiQuestionnaireId}`}>Next Part</Link>
+								</Button>
+							) : (
+								<div className="flex justify-center items-center flex-col">
+									<Button disabled>
+										Please Wait <Loader2 className="h-4 w-4 animate-spin" />
+									</Button>
+									<p className="text-muted-foreground text-sm">Kindly wait while we are analyzing your answers.</p>
+								</div>
+							)}
 						</CardFooter>
 					</Card>
 				</main>
@@ -262,8 +279,8 @@ export default function QuestionnairePage() {
 
 	return (
 		<div className="flex min-h-screen flex-col">
-			<Dialog open={!hasAgreed}>
-				<DialogContent>
+			<Dialog open={!hasAgreed} onOpenChange={() => router.push('/')}>
+				<DialogContent showCross={false}>
 					<DialogHeader>
 						<DialogTitle>Are you ready to attempt the questionnaire?</DialogTitle>
 						<DialogDescription>
@@ -274,16 +291,16 @@ export default function QuestionnairePage() {
 						</DialogDescription>
 					</DialogHeader>
 					<DialogFooter>
-						<Link href={'/'} className={cn(buttonVariants({ variant: 'destructive' }))} onClick={() => setHasAgreed(true)}>
+						<Button variant={'destructive'} onClick={() => router.push('/')}>
 							Go, Back
-						</Link>
+						</Button>
 						<Button onClick={() => setHasAgreed(true)}>Yes, Start</Button>
 					</DialogFooter>
 				</DialogContent>
 			</Dialog>
 
 			<Dialog open={showTimeWarning} onOpenChange={setShowTimeWarning}>
-				<DialogContent>
+				<DialogContent showCross={false}>
 					<DialogHeader>
 						<DialogTitle className="flex items-center gap-2">
 							<AlertTriangle className="h-5 w-5 text-destructive" />
@@ -300,7 +317,7 @@ export default function QuestionnairePage() {
 				</DialogContent>
 			</Dialog>
 
-			<Dialog open={isSubmitting}>
+			{/* <Dialog open={isSubmitting}>
 				<DialogContent>
 					<DialogHeader>
 						<DialogTitle className="flex items-center gap-2">
@@ -315,7 +332,7 @@ export default function QuestionnairePage() {
 						</Button>
 					</DialogFooter>
 				</DialogContent>
-			</Dialog>
+			</Dialog> */}
 
 			<main className="flex-1 mx-auto mt-10 container max-w-4xl py-8 px-4">
 				<div className="mb-8">
@@ -348,7 +365,11 @@ export default function QuestionnairePage() {
 					</CardHeader>
 					<CardContent>
 						{currentQuestion.type === 'multiple_choice' && (
-							<RadioGroup value={answers[currentQuestion.id] || ''} onValueChange={handleAnswerChange} className="space-y-3">
+							<RadioGroup
+								disabled={isSubmitting}
+								value={answers[currentQuestion.id] || ''}
+								onValueChange={handleAnswerChange}
+								className="space-y-3">
 								{currentQuestion.options?.map((option, index) => (
 									<div key={index} className="flex items-center space-x-2 rounded-md border p-3 hover:bg-muted/50">
 										<RadioGroupItem value={option} id={`option-${index}`} />
@@ -366,6 +387,7 @@ export default function QuestionnairePage() {
 								onChange={e => handleAnswerChange(e.target.value)}
 								placeholder={currentQuestion.placeholder}
 								className="min-h-[150px]"
+								disabled={isSubmitting}
 							/>
 						)}
 					</CardContent>

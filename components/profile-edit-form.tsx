@@ -63,7 +63,7 @@ const formSchema = z.object({
 	githubUrl: z
 		.string()
 		.url({
-			message: 'Please enter a valid GitHub URL.',
+			message: 'Please enter a valid GitHub URL or Resume link.',
 		})
 		.optional()
 		.or(z.literal('')),
@@ -394,7 +394,7 @@ export function ProfileEditForm({ user }: { user: UserData }) {
 					name="githubUrl"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>GitHub Profile URL</FormLabel>
+							<FormLabel>GitHub Profile URL / Resume Link</FormLabel>
 							<FormControl>
 								<Input placeholder="https://github.com/username" {...field} />
 							</FormControl>

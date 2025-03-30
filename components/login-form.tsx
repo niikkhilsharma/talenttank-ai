@@ -9,10 +9,11 @@ import { z } from 'zod'
 import { Loader2 } from 'lucide-react'
 import { signIn } from 'next-auth/react'
 
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
+import { cn } from '@/lib/utils'
 
 const formSchema = z.object({
 	email: z.string().email({
@@ -108,12 +109,15 @@ export function LoginForm() {
 					)}
 				</Button>
 
-				<div className="text-center text-sm">
+				{/* <div className="text-center text-sm">
 					Don&apos;t have an account?{' '}
 					<Link href="/register" className="font-medium text-primary hover:underline">
 						Register
 					</Link>
-				</div>
+				</div> */}
+				<Link href={'/register'} className={cn(buttonVariants({ variant: 'outline' }), 'w-full')}>
+					Create an account
+				</Link>
 			</form>
 		</Form>
 	)

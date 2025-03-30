@@ -7,13 +7,13 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 	const user = session?.user
 
 	if (!user) {
-		redirect('/login')
+		redirect('/register')
 	} else if (user.role !== 'ADMIN') {
 		redirect('/user')
 	}
 
 	return (
-		<div className="flex min-h-screen flex-col p-4">
+		<div className="flex min-h-screen flex-col py-4">
 			<main className="flex-1 container mx-auto">{children}</main>
 		</div>
 	)

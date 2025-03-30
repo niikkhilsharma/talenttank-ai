@@ -53,8 +53,8 @@ export default function UserResponsePage() {
 						<div key={user?.id} className="border-b pb-4">
 							<div className="flex items-center gap-4 mb-2">
 								<Avatar>
-									<AvatarImage src={user?.avatarUrl || 'https://github.com/shadcn.png'} />
-									<AvatarFallback>CN</AvatarFallback>
+									<AvatarImage src={user?.avatarUrl} />
+									<AvatarFallback>{user?.firstName?.[0]}</AvatarFallback>
 								</Avatar>
 								<div>
 									<p className="font-medium">
@@ -79,16 +79,24 @@ export default function UserResponsePage() {
 											<div className="w-full">
 												<div className="flex justify-between mb-1">
 													<span>Predictive Index</span>
-													<span>{item.averagePredictiveIndex}/5</span>
+													<span>
+														{item.averagePredictiveIndex * 20}/{5 * 20}
+													</span>
+													{/* <span>
+														{item.averagePredictiveIndex}/{5}
+													</span> */}
 												</div>
-												<Progress max={5} value={(item.averagePredictiveIndex / 5) * 100} className="h-2" />
+												<Progress max={100} value={item.averagePredictiveIndex * 20} className="h-2" />
 											</div>
 											<div className="w-full">
 												<div className="flex justify-between mb-1">
 													<span>Emotional Intelligence</span>
-													<span>{item?.averageEmotionalIntelligence}/5</span>
+													<span>
+														{item?.averageEmotionalIntelligence * 20}/{5 * 20}
+													</span>
+													{/* <span>{item?.averageEmotionalIntelligence}/5</span> */}
 												</div>
-												<Progress max={5} value={(item.averageEmotionalIntelligence / 5) * 100} className="h-2" />
+												<Progress max={100} value={item.averageEmotionalIntelligence * 20} className="h-2" />
 											</div>
 											<Link href={`/admin/report/${user?.id}`} className="text-sm text-blue-500 hover:underline">
 												View full report

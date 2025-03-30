@@ -71,16 +71,23 @@ const ReportDescription = ({ assessmentId, aiAnalysis }: { assessmentId: string;
 						<div>
 							<div className="flex justify-between mb-1">
 								<span>Predictive Index</span>
-								<span>{aiAnalysis?.averagePredictiveIndex}/5</span>
+								<span>
+									{/* this was out of 5 initially like 2/5 */}
+									{aiAnalysis?.averagePredictiveIndex * 20}/{5 * 20}
+									{/* {aiAnalysis?.averagePredictiveIndex}/{5} */}
+								</span>
 							</div>
-							<Progress max={5} value={(aiAnalysis.averagePredictiveIndex! / 5) * 100} className="h-2" />
+							<Progress max={100} value={aiAnalysis.averagePredictiveIndex! * 20} className="h-2" />
 						</div>
 						<div>
 							<div className="flex justify-between mb-1">
 								<span>Emotional Intelligence</span>
-								<span>{aiAnalysis?.averageEmotionalIntelligence}/5</span>
+								<span>
+									{aiAnalysis?.averageEmotionalIntelligence * 20}/{5 * 20}
+									{/* {aiAnalysis?.averageEmotionalIntelligence}/{5} */}
+								</span>
 							</div>
-							<Progress max={5} value={(aiAnalysis.averageEmotionalIntelligence / 5) * 100} className="h-2" />
+							<Progress max={100} value={aiAnalysis.averageEmotionalIntelligence * 20} className="h-2" />
 						</div>
 					</CardContent>
 				</Card>
