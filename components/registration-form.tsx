@@ -361,7 +361,7 @@ export function RegistrationForm() {
 					name="githubUrl"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>GitHub Profile URL / Resume Link</FormLabel>
+							<FormLabel>GitHub / Resume / Portfolio Link</FormLabel>
 							<FormControl>
 								<Input placeholder="https://github.com/username" {...field} />
 							</FormControl>
