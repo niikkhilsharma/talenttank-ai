@@ -12,7 +12,8 @@ cloudinary.config({
 
 // Define schema for validation
 const registerSchema = z.object({
-	name: z.string().min(3),
+	firstName: z.string().min(3),
+	lastName: z.string().min(3),
 	email: z.string().email(),
 	password: z.string().min(8),
 	countryCode: z.string().min(1),
@@ -20,6 +21,14 @@ const registerSchema = z.object({
 	dateOfBirth: z.string().refine(val => !isNaN(Date.parse(val)), {
 		message: 'Invalid date format',
 	}),
+	jobTitle: z.string().min(2),
+	company: z.string().min(2),
+	yearsOfExperience: z.string().refine(val => !isNaN(Number(val)), {
+		message: 'Years of experience must be a number',
+	}),
+	linkedinUrl: z.string().url().optional().or(z.literal('')),
+	githubUrl: z.string().url().optional().or(z.literal('')),
+	twitterUrl: z.string().url().optional().or(z.literal('')),
 })
 
 export async function POST(request: NextRequest) {
@@ -95,7 +104,6 @@ export async function POST(request: NextRequest) {
 				yearsOfExperience: Number.parseInt(validatedData.yearsOfExperience),
 				linkedinUrl: validatedData.linkedinUrl || null,
 				githubUrl: validatedData.githubUrl || null,
-				twitterUrl: validatedData.twitterUrl || null,
 				avatarUrl: profilePictureUrl || null,
 			},
 		})
