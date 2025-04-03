@@ -2,7 +2,6 @@
 
 import Script from 'next/script'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 
 interface PaymentButtonProps {
 	getAvailableCredits: () => Promise<void>

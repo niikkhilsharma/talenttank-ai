@@ -6,8 +6,12 @@ export async function GET() {
 	const session = await auth()
 	const user = session?.user
 
+	if (!user) {
+		return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+	}
+
 	try {
-		const userDetails = await prisma.user.findUnique({ where: { id: user?.id! } })
+		const userDetails = await prisma.user.findUnique({ where: { id: user.id! } })
 		const totalCredits = userDetails?.totalCredits ? userDetails.totalCredits : 0
 		const usedCredits = userDetails?.usedCredits ? userDetails.usedCredits : 0
 
@@ -16,6 +20,6 @@ export async function GET() {
 			availableCredits: totalCredits - usedCredits,
 		})
 	} catch (error) {
-		return NextResponse.json({ message: 'Something went wrong' }, { status: 500 })
+		return NextResponse.json({ message: 'Something went wrong', error }, { status: 500 })
 	}
 }

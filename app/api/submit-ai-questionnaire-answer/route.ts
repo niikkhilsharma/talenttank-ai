@@ -58,12 +58,12 @@ export async function POST(req: Request) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 		}
 
-		const availableCredits = await getAvailableCredits(user?.id!)
+		const availableCredits = await getAvailableCredits(user.id!)
 		if (availableCredits <= 0) {
 			return NextResponse.json({ error: 'No credits available' }, { status: 400 })
 		}
 
-		increaseUsedCredits({ userId: user?.id!, increaseBy: 1 })
+		increaseUsedCredits({ userId: user.id!, increaseBy: 1 })
 
 		const { answers, aiQuestionnaireId } = await req.json()
 
