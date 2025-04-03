@@ -321,7 +321,11 @@ export default function AiQuestion({
 								onChange={e => handleAnswerChange(e.target.value)}
 								placeholder={currentQuestion.placeholder || ''}
 								className="min-h-[150px]"
+								maxLength={60}
 							/>
+						)}
+						{currentQuestion.type === 'input_text' && (
+							<p className="text-xs text-muted-foreground mt-1">{answers[currentQuestion.id]?.length || 0}/60</p>
 						)}
 					</CardContent>
 					<CardFooter className="flex justify-between">

@@ -18,6 +18,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { CountryDropdown } from './ui/country-dropdown'
 
 const formSchema = z.object({
 	firstName: z.string().min(2, {
@@ -67,13 +68,6 @@ const formSchema = z.object({
 		})
 		.optional()
 		.or(z.literal('')),
-	twitterUrl: z
-		.string()
-		.url({
-			message: 'Please enter a valid Twitter URL.',
-		})
-		.optional()
-		.or(z.literal('')),
 	profilePicture: z.instanceof(File).optional(),
 })
 
@@ -90,7 +84,6 @@ type UserData = {
 	yearsOfExperience: number | null
 	linkedinUrl: string | null
 	githubUrl: string | null
-	twitterUrl: string | null
 	avatarUrl: string | null
 }
 
@@ -114,7 +107,6 @@ export function ProfileEditForm({ user }: { user: UserData }) {
 			yearsOfExperience: String(user.yearsOfExperience) || '',
 			linkedinUrl: user.linkedinUrl || '',
 			githubUrl: user.githubUrl || '',
-			twitterUrl: user.twitterUrl || '',
 		},
 	})
 
@@ -277,14 +269,19 @@ export function ProfileEditForm({ user }: { user: UserData }) {
 						name="countryCode"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Country Code</FormLabel>
-								<FormControl>
-									<Input placeholder="+1" {...field} />
-								</FormControl>
+								<FormLabel>Country</FormLabel>
+								<CountryDropdown
+									placeholder="Country"
+									defaultValue={field.value}
+									onChange={country => {
+										field.onChange(country.countryCallingCodes[0])
+									}}
+								/>
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
+
 					<FormField
 						control={form.control}
 						name="phoneNumber"
@@ -338,7 +335,7 @@ export function ProfileEditForm({ user }: { user: UserData }) {
 						name="jobTitle"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Professional Occupation</FormLabel>
+								<FormLabel>Current Occupation</FormLabel>
 								<FormControl>
 									<Input placeholder="Student" {...field} />
 								</FormControl>
@@ -394,23 +391,9 @@ export function ProfileEditForm({ user }: { user: UserData }) {
 					name="githubUrl"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>GitHub Profile URL / Resume Link</FormLabel>
+							<FormLabel>GitHub / Resume / Portfolio Link</FormLabel>
 							<FormControl>
 								<Input placeholder="https://github.com/username" {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-
-				<FormField
-					control={form.control}
-					name="twitterUrl"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Twitter Profile URL</FormLabel>
-							<FormControl>
-								<Input placeholder="https://twitter.com/username" {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>

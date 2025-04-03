@@ -2,8 +2,13 @@
 
 import Script from 'next/script'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
-export default function PaymentButton() {
+interface PaymentButtonProps {
+	getAvailableCredits: () => Promise<void>
+}
+
+export default function PaymentButton({ getAvailableCredits }: PaymentButtonProps) {
 	const [loading, setLoading] = useState(false)
 
 	const handlePayment = async () => {
@@ -43,7 +48,10 @@ export default function PaymentButton() {
 					})
 					const res = await result.json()
 					//process further request, whatever should happen after request fails
-					if (res.isOk) alert(res.message) //process further request after
+					if (res.isOk) {
+						alert(res.message)
+						getAvailableCredits()
+					} //process further request after
 					else {
 						alert(res.message)
 					}

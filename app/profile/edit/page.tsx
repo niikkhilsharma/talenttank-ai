@@ -37,7 +37,7 @@ export default async function ProfileEditPage() {
 	}
 
 	return (
-		<div className="container flex min-h-screen flex-col items-center justify-center px-4 py-10 mx-auto">
+		<div className="container flex min-h-screen flex-col items-center justify-center py-10 mx-auto">
 			<div className="mx-auto w-full max-w-3xl space-y-6">
 				<div className="space-y-2 text-center">
 					<h1 className="text-3xl font-bold">Edit Profile</h1>

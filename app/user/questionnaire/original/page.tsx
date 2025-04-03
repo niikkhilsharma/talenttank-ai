@@ -1,4 +1,5 @@
 'use client'
+
 import { useState, useEffect, useCallback } from 'react'
 import { ArrowLeft, ArrowRight, CheckCircle, Loader2, Clock, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
@@ -13,6 +14,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { toast } from 'sonner'
 import { Question } from '@/types/questions'
 import { useRouter } from 'next/navigation'
+import PaymentButton from '@/components/razorpay'
 
 // The questionnaire data
 const questionnaireData: Question[] = [
@@ -59,9 +61,9 @@ const questionnaireData: Question[] = [
 	},
 	{
 		id: 5,
-		question: 'Which is position are you applying for?',
+		question: 'Which profession are you applying for?',
 		type: 'input_text',
-		placeholder: 'Enter your position...',
+		placeholder: 'Enter your profession...',
 		category: 'personal_information',
 	},
 ]
@@ -80,6 +82,8 @@ export default function QuestionnairePage() {
 	const [timeRemaining, setTimeRemaining] = useState(TIMER_DURATION)
 	const [showTimeWarning, setShowTimeWarning] = useState(false)
 	const [aiQuestionnaireId, setAiQuestionnaireId] = useState(0)
+	const [availableCredits, setAvailableCredits] = useState(0)
+	const [fetchingCredits, setFetchingCredits] = useState(false)
 
 	const totalQuestions = questionnaireData.length
 	const currentQuestion = questionnaireData[currentStep]
@@ -239,6 +243,24 @@ export default function QuestionnairePage() {
 		submitForm(false)
 	}
 
+	const getAvailableCreditsCallback = async () => {
+		setFetchingCredits(true)
+
+		await new Promise(resolve => setTimeout(resolve, 2000))
+
+		const response = await fetch('/api/avail-credits')
+		const data = await response.json()
+		console.log(data)
+		setAvailableCredits(data.availableCredits)
+		setFetchingCredits(false)
+	}
+
+	useEffect(() => {
+		if (success || isSubmitting) {
+			getAvailableCreditsCallback()
+		}
+	}, [success, isSubmitting])
+
 	// Render the success state
 	if (success || isSubmitting) {
 		return (
@@ -259,9 +281,19 @@ export default function QuestionnairePage() {
 						</CardContent>
 						<CardFooter className="flex justify-center">
 							{success ? (
-								<Button asChild>
-									<Link href={`/user/questionnaire/ai/${aiQuestionnaireId}`}>Next Part</Link>
-								</Button>
+								<>
+									{!fetchingCredits ? (
+										availableCredits > 0 ? (
+											<Button asChild>
+												<Link href={`/user/questionnaire/ai/${aiQuestionnaireId}`}>Next Part</Link>
+											</Button>
+										) : (
+											<PaymentButton getAvailableCredits={getAvailableCreditsCallback} />
+										)
+									) : (
+										<Button disabled>Checking credits...</Button>
+									)}
+								</>
 							) : (
 								<div className="flex justify-center items-center flex-col">
 									<Button disabled>
@@ -317,23 +349,6 @@ export default function QuestionnairePage() {
 				</DialogContent>
 			</Dialog>
 
-			{/* <Dialog open={isSubmitting}>
-				<DialogContent>
-					<DialogHeader>
-						<DialogTitle className="flex items-center gap-2">
-							<AlertTriangle className="h-5 w-5 text-destructive" />
-							Please wait while AI is analyzing your answers.
-						</DialogTitle>
-						<DialogDescription>This may take a few seconds. Please do not close the page.</DialogDescription>
-					</DialogHeader>
-					<DialogFooter>
-						<Button size={'icon'}>
-							<Loader2 className="animate-spin" />
-						</Button>
-					</DialogFooter>
-				</DialogContent>
-			</Dialog> */}
-
 			<main className="flex-1 mx-auto mt-10 container max-w-4xl py-8 px-4">
 				<div className="mb-8">
 					<div className="flex justify-between items-center mb-2">
@@ -388,7 +403,11 @@ export default function QuestionnairePage() {
 								placeholder={currentQuestion.placeholder}
 								className="min-h-[150px]"
 								disabled={isSubmitting}
+								maxLength={200}
 							/>
+						)}
+						{currentQuestion.type === 'input_text' && (
+							<p className="text-xs text-muted-foreground mt-1">{answers[currentQuestion.id]?.length || 0}/200</p>
 						)}
 					</CardContent>
 					<CardFooter className="flex justify-between">

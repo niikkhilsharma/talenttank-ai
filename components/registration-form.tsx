@@ -305,7 +305,7 @@ export function RegistrationForm() {
 						name="jobTitle"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Professional Occupation</FormLabel>
+								<FormLabel>Current Occupation</FormLabel>
 								<FormControl>
 									<Input placeholder="Software Engineer" {...field} />
 								</FormControl>

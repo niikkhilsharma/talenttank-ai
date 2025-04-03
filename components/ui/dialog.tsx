@@ -40,7 +40,6 @@ function DialogOverlay({ className, ...props }: React.ComponentProps<typeof Dial
 }
 
 function DialogContent({ className, children, showCross = true, ...props }: DialogContentProps) {
-	console.log(showCross, 'from here')
 	return (
 		<DialogPortal data-slot="dialog-portal">
 			<DialogOverlay />

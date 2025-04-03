@@ -21,6 +21,34 @@ const aiAnswerSchema = z.array(
 	})
 )
 
+async function getAvailableCredits(userId: string) {
+	const availableCredits = await prisma.user.findUnique({
+		where: { id: userId },
+		select: { totalCredits: true, usedCredits: true },
+	})
+
+	const totalCredits = availableCredits?.totalCredits ? availableCredits.totalCredits : 0
+	const usedCredits = availableCredits?.usedCredits ? availableCredits.usedCredits : 0
+
+	return totalCredits - usedCredits
+}
+
+async function increaseUsedCredits({ userId, increaseBy = 1 }: { userId: string; increaseBy?: number }) {
+	const availableCredits = await prisma.user.findUnique({
+		where: { id: userId },
+		select: { totalCredits: true, usedCredits: true },
+	})
+
+	const usedCredits = availableCredits?.usedCredits ? availableCredits.usedCredits : 0
+
+	await prisma.user.update({
+		where: { id: userId },
+		data: {
+			usedCredits: usedCredits + increaseBy,
+		},
+	})
+}
+
 export async function POST(req: Request) {
 	try {
 		const session = await auth()
@@ -29,6 +57,13 @@ export async function POST(req: Request) {
 		if (!user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 		}
+
+		const availableCredits = await getAvailableCredits(user?.id!)
+		if (availableCredits <= 0) {
+			return NextResponse.json({ error: 'No credits available' }, { status: 400 })
+		}
+
+		increaseUsedCredits({ userId: user?.id!, increaseBy: 1 })
 
 		const { answers, aiQuestionnaireId } = await req.json()
 
