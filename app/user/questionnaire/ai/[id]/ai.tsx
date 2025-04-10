@@ -299,7 +299,7 @@ export default function AiQuestion({
 						<div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm mb-2">
 							{currentQuestion.category === 'emotional_intelligence' ? 'emotional intelligence' : 'predictive index'}
 						</div>
-						<CardTitle>{currentQuestion.question}</CardTitle>
+						<CardTitle onCopy={e => e.preventDefault()}>{currentQuestion.question}</CardTitle>
 					</CardHeader>
 					<CardContent>
 						{currentQuestion.type === 'multiple_choice' && (
@@ -322,6 +322,8 @@ export default function AiQuestion({
 								placeholder={currentQuestion.placeholder || ''}
 								className="min-h-[150px]"
 								maxLength={60}
+								onCopy={e => e.preventDefault()}
+								onPaste={e => e.preventDefault()}
 							/>
 						)}
 						{currentQuestion.type === 'input_text' && (

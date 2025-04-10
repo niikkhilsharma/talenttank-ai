@@ -376,11 +376,12 @@ export default function QuestionnairePage() {
 						<div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm mb-2">
 							{currentQuestion.category === 'expertise' ? 'Professional Expertise' : 'Work Behavior'}
 						</div>
-						<CardTitle>{currentQuestion.question}</CardTitle>
+						<CardTitle onCopy={e => e.preventDefault()}>{currentQuestion.question}</CardTitle>
 					</CardHeader>
 					<CardContent>
 						{currentQuestion.type === 'multiple_choice' && (
 							<RadioGroup
+								onCopy={e => e.preventDefault()}
 								disabled={isSubmitting}
 								value={answers[currentQuestion.id] || ''}
 								onValueChange={handleAnswerChange}
@@ -403,6 +404,7 @@ export default function QuestionnairePage() {
 								placeholder={currentQuestion.placeholder}
 								className="min-h-[150px]"
 								disabled={isSubmitting}
+								onPaste={e => e.preventDefault()}
 								maxLength={200}
 							/>
 						)}
