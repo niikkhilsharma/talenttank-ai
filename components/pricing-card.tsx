@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Check } from 'lucide-react'
 import Link from 'next/link'
+import PaymentButton from './razorpay'
 
 interface PricingCardProps {
 	title: string
@@ -43,9 +44,10 @@ export default function PricingCard({
 				</ul>
 			</CardContent>
 			<CardFooter>
-				<Button variant={buttonVariant} className="w-full" asChild>
+				{/* <Button variant={buttonVariant} className="w-full" asChild>
 					<Link href="/signup">{buttonText}</Link>
-				</Button>
+				</Button> */}
+				<PaymentButton />
 			</CardFooter>
 		</Card>
 	)

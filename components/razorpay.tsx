@@ -2,9 +2,10 @@
 
 import Script from 'next/script'
 import { useState } from 'react'
+import { Button } from './ui/button'
 
 interface PaymentButtonProps {
-	getAvailableCredits: () => Promise<void>
+	getAvailableCredits?: () => Promise<void>
 }
 
 export default function PaymentButton({ getAvailableCredits }: PaymentButtonProps) {
@@ -25,11 +26,11 @@ export default function PaymentButton({ getAvailableCredits }: PaymentButtonProp
 			const { order, user } = data
 
 			const options = {
-				key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!, // Use public key
+				key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
 				amount: order.amount,
 				currency: order.currency,
-				name: 'My Company Name',
-				description: 'My Company Description',
+				name: 'Talentank AI',
+				description: 'Talentank AI',
 				order_id: order.id,
 				// @ts-expect-error //ignore
 				handler: async function (response) {
@@ -49,7 +50,7 @@ export default function PaymentButton({ getAvailableCredits }: PaymentButtonProp
 					//process further request, whatever should happen after request fails
 					if (res.isOk) {
 						alert(res.message)
-						getAvailableCredits()
+						if (getAvailableCredits) getAvailableCredits()
 					} //process further request after
 					else {
 						alert(res.message)
@@ -79,11 +80,11 @@ export default function PaymentButton({ getAvailableCredits }: PaymentButtonProp
 	}
 
 	return (
-		<div>
+		<div className="w-full">
 			<Script id="razorpay-checkout-js" src="https://checkout.razorpay.com/v1/checkout.js" />
-			<button onClick={handlePayment} disabled={loading} className="px-4 py-2 bg-blue-500 text-white rounded-md">
-				{loading ? 'Processing...' : 'Pay ₹100'}
-			</button>
+			<Button onClick={handlePayment} disabled={loading} className="w-full">
+				{loading ? 'Processing...' : 'Pay ₹299'}
+			</Button>
 		</div>
 	)
 }

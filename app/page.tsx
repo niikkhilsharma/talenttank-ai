@@ -187,18 +187,19 @@ export default function LandingPage() {
 								</p>
 							</div>
 						</div>
-						<div className="mx-auto grid max-w-5xl items-start gap-6 py-12 lg:grid-cols-3">
-							<PricingCard
+						{/* <div className="mx-auto grid max-w-5xl items-start gap-6 py-12 lg:grid-cols-3"> */}
+						<div className="mx-auto grid max-w-xl items-start gap-6 py-12 lg:grid-cols-1">
+							{/* <PricingCard
 								title="Free"
 								price="$0"
 								description="Perfect for trying out the platform"
 								features={['5 contests per month', 'Basic analytics', 'Standard question bank', 'Email support']}
 								buttonText="Get Started"
 								buttonVariant="outline"
-							/>
+							/> */}
 							<PricingCard
 								title="Professional"
-								price="$19"
+								price="₹299"
 								description="Ideal for serious learners"
 								features={[
 									'Unlimited contests',
@@ -211,7 +212,7 @@ export default function LandingPage() {
 								buttonVariant="default"
 								highlighted={true}
 							/>
-							<PricingCard
+							{/* <PricingCard
 								title="Enterprise"
 								price="Custom"
 								description="For teams and organizations"
@@ -224,7 +225,7 @@ export default function LandingPage() {
 								]}
 								buttonText="Contact Sales"
 								buttonVariant="outline"
-							/>
+							/> */}
 						</div>
 					</div>
 				</section>

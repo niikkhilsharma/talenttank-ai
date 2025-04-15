@@ -19,7 +19,7 @@ export async function GET() {
 	try {
 		const options = {
 			// here, we are charging the user for 100 INR
-			amount: 100 * 100,
+			amount: 299 * 100,
 			currency: 'INR',
 			receipt: `receipt_${Math.floor(Math.random() * 1000000)}`,
 			notes: { userId: user.id as string, date: new Date().toISOString() },
@@ -30,7 +30,7 @@ export async function GET() {
 		const addInitialPayment = await prisma.payment.create({
 			data: {
 				userId: user.id,
-				amount: 100,
+				amount: 299,
 				currency: 'INR',
 				status: 'PENDING',
 				razorpayOrderId: response.id,
