@@ -2,22 +2,15 @@ import crypto from 'crypto'
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma/prisma'
-// import { auth } from '@/auth'
 
 export async function POST(req: Request) {
-	// const session = await auth()
-	// const user = session?.user
 	console.log('webhook is hit ------------------------------------------------------------')
-
-	// if (!user) {
-	// 	return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-	// }
 
 	try {
 		const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET! // Set this in Razorpay dashboard
 		const headersList = await headers()
 		const signature = headersList.get('x-razorpay-signature')
-		console.log(signature, '000000000000000000000000000000000000000000000000000000000000000000000000000')
+		console.log(signature, '--------------------------------------------------------------------------------')
 
 		const rawBody = await req.text()
 		const parsedBody = JSON.parse(rawBody)
