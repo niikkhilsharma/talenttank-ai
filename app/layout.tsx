@@ -6,6 +6,7 @@ import { Navbar } from '@/components/navbar'
 import { auth } from '@/auth'
 import { AdminNav } from '@/components/admin-nav'
 import TanstackProvider from '@/components/query-client-provider'
+import Footer from '@/components/footer'
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -43,6 +44,7 @@ export default async function RootLayout({
 				{user ? user.role === 'ADMIN' ? <AdminNav /> : <Navbar /> : <Navbar />}
 				<main className="px-4">
 					<TanstackProvider>{children}</TanstackProvider>
+					<Footer />
 				</main>
 				<Toaster />
 			</body>

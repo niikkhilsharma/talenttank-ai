@@ -1,6 +1,6 @@
 export default function TermsOfConditions() {
 	return (
-		<div className="max-w-screen-xl mx-auto my-10">
+		<div className="max-w-screen-xl mx-auto my-10 min-h-screen">
 			<h1 className="text-3xl font-bold text-center my-4">Terms and Conditions</h1>
 			<ul className="list-decimal">
 				<li>At Talentank, your privacy is important to us.</li>

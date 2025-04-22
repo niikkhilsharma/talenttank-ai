@@ -1,6 +1,6 @@
 export default function PrivacyPolicy() {
 	return (
-		<div className="max-w-screen-xl mx-auto my-10">
+		<div className="max-w-screen-xl mx-auto my-10 min-h-screen">
 			<h1 className="text-3xl font-bold text-center my-4">Privacy Policy</h1>
 			<ul className="list-decimal text-start">
 				<li>By accessing and using Talentank, you agree to comply with the following terms:</li>
