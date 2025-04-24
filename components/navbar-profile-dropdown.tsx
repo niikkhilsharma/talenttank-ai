@@ -23,7 +23,7 @@ export default function NavbarProfileDropdown() {
 					<DropdownMenuItem>
 						<Link href={'/user/all-reports'}>All Reports</Link>
 					</DropdownMenuItem>
-					<DropdownMenuItem onClick={() => signOut({ redirectTo: '/' })}>Logout</DropdownMenuItem>
+					<DropdownMenuItem onClick={() => signOut()}>Logout</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>
 		</div>
