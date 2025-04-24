@@ -38,12 +38,15 @@ export default function Footer() {
 						<Brain className="h-5 w-5 text-primary" />
 						<p className="text-sm font-medium">© {new Date().getFullYear()} QuizGenius. All rights reserved.</p>
 					</div>
-					<div className="flex gap-4">
+					<div className="flex flex-wrap gap-4">
+						<Link href="/refund-policy" className="text-sm text-muted-foreground hover:text-foreground">
+							Cancellation and No Refund Policy
+						</Link>
 						<Link href="/toc" className="text-sm text-muted-foreground hover:text-foreground">
 							Terms
 						</Link>
 						<Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-foreground">
-							Privacy
+							Privacy Policy
 						</Link>
 						<Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground">
 							Contact
