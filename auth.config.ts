@@ -5,6 +5,7 @@ import prisma from '@/lib/prisma/prisma'
 
 // Notice this is only an object, not a full Auth.js instance
 export default {
+	trustHost: true,
 	providers: [
 		Credentials({
 			credentials: {
