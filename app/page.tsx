@@ -86,7 +86,7 @@ export default function LandingPage() {
 								<div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Key Features</div>
 								<h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Everything you need to excel</h2>
 								<p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-									Our AI-powered platform offers a comprehensive suite of features designed to enhance your learning experience.
+									Our AI-powered platform offers a comprehensive suite of features designed to enhance your development experience.
 								</p>
 							</div>
 						</div>
@@ -94,7 +94,7 @@ export default function LandingPage() {
 							<FeatureCard
 								icon={<Brain className="h-10 w-10 text-primary" />}
 								title="AI-Tailored Questions"
-								description="Questions dynamically generated based on your profession, expertise level, and learning goals."
+								description="Questions dynamically generated based on your profession, expertise level, and development goals."
 							/>
 							<FeatureCard
 								icon={<BarChart3 className="h-10 w-10 text-primary" />}
@@ -109,7 +109,7 @@ export default function LandingPage() {
 							<FeatureCard
 								icon={<Clock className="h-10 w-10 text-primary" />}
 								title="Real-time Feedback"
-								description="Instant, detailed explanations and feedback to accelerate your learning."
+								description="Instant, detailed explanations and feedback to accelerate your development."
 							/>
 							<FeatureCard
 								icon={<Award className="h-10 w-10 text-primary" />}
@@ -144,7 +144,7 @@ export default function LandingPage() {
 								</div>
 								<h3 className="text-xl font-bold">Create Your Profile</h3>
 								<p className="text-center text-muted-foreground">
-									Tell us about your profession, expertise level, and learning goals.
+									Tell us about your profession, expertise level, and development goals.
 								</p>
 							</div>
 							<div className="flex flex-col items-center space-y-4 rounded-lg border p-6 shadow-sm">
@@ -206,7 +206,7 @@ export default function LandingPage() {
 									'Advanced analytics',
 									'AI-generated questions',
 									'Priority support',
-									'Custom learning paths',
+									'Custom development paths',
 								]}
 								buttonText="Subscribe Now"
 								buttonVariant="default"
@@ -238,7 +238,7 @@ export default function LandingPage() {
 								<div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Testimonials</div>
 								<h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">What Our Users Say</h2>
 								<p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-									Hear from professionals who have transformed their learning experience with QuizGenius.
+									Hear from professionals who have transformed their development experience with QuizGenius.
 								</p>
 							</div>
 						</div>

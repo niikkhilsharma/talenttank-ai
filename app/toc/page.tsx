@@ -24,7 +24,7 @@ export default function TermsOfConditions() {
 						<h2 className="text-2xl font-semibold text-blue-700 mb-3">2. How We Use Your Data</h2>
 						<p className="text-gray-700 mb-3">We use the data you provide to:</p>
 						<ul className="list-disc pl-6 text-gray-700 space-y-1">
-							<li>Personalize your learning or talent assessment experience</li>
+							<li>Personalize your development or talent assessment experience</li>
 							<li>Generate insights and recommendations tailored to your profile</li>
 							<li>Communicate important updates, opportunities, or progress reports</li>
 							<li>Improve the overall functionality and effectiveness of our platform</li>

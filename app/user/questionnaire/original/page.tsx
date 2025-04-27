@@ -276,7 +276,7 @@ export default function QuestionnairePage() {
 								<CheckCircle className="h-12 w-12 text-primary" />
 							</div>
 							<p className="text-center text-muted-foreground">
-								We&apos;ll analyze your responses and create personalized contests tailored to your expertise and learning style.
+								We&apos;ll analyze your responses and create personalized contests tailored to your expertise and development style.
 							</p>
 						</CardContent>
 						<CardFooter className="flex justify-center">
@@ -359,7 +359,7 @@ export default function QuestionnairePage() {
 						</div>
 					</div>
 					<p className="text-muted-foreground">
-						Help us understand your expertise and learning style to create personalized contests.
+						Help us understand your expertise and development style to create personalized contests.
 					</p>
 					<Progress value={progress} className="h-2 mt-4" />
 				</div>

@@ -207,8 +207,8 @@ export default function AiQuestion({
 								<CheckCircle className="h-12 w-12 text-primary" />
 							</div>
 							<p className="text-center text-muted-foreground">
-								We&apos;ve analyzed your responses and created personalized report tailored to your expertise and learning style. You
-								can view the report below.
+								We&apos;ve analyzed your responses and created personalized report tailored to your expertise and development style.
+								You can view the report below.
 							</p>
 						</CardContent>
 						<CardFooter className="flex justify-center">
@@ -282,7 +282,7 @@ export default function AiQuestion({
 						</div>
 					</div>
 					<p className="text-muted-foreground">
-						Help us understand your expertise and learning style to create personalized contests.
+						Help us understand your expertise and development style to create personalized contests.
 					</p>
 					<Progress value={progress} className="h-2 mt-4" />
 				</div>
