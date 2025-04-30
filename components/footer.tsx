@@ -53,7 +53,7 @@ export default function Footer() {
 						</Link>
 					</div>
 				</div>
-				<p className="text-center text-xs">THIS WEBSITE IS MANGED BY SASHAKT ENTERPRISES PVT LTD</p>
+				<p className="text-center text-xs">THIS WEBSITE IS MANGED BY AANNARA</p>
 			</footer>
 		</>
 	)

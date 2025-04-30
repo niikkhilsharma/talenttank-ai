@@ -81,6 +81,12 @@ export default function TermsOfConditions() {
 							always know where we stand.
 						</p>
 					</section>
+					<section>
+						<h2 className="text-2xl font-semibold text-blue-700 mb-3">8. Entertainment Articles</h2>
+						<p className="text-gray-600 mb-8">
+							Talentank is also providing entertainment articles to keep you informed and engaged with the latest trends.
+						</p>
+					</section>
 				</div>
 
 				<div className="mt-12 p-6 bg-blue-50 rounded-lg border border-blue-100">
