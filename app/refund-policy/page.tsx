@@ -52,7 +52,7 @@ export default function CancellationRefundPolicy() {
 							of your Talentank account. We encourage you to reach out to our support team at{' '}
 							<a href="mailto:Support@talentank.in" className="text-blue-600 hover:underline">
 								Support@talentank.in
-							</a>{' '}
+							</a>
 							if you face any issues.
 						</p>
 					</section>

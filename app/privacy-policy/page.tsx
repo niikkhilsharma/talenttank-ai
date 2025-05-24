@@ -4,51 +4,62 @@ export default function PrivacyPolicy() {
 			<div className="bg-white shadow-md rounded-lg p-6 md:p-8">
 				<h1 className="text-3xl font-bold text-center mb-8">Privacy Policy</h1>
 
-				<div className="mb-6">
-					<p className="text-gray-700 mb-4">
-						Welcome to Talentank. By accessing and using our platform, you agree to comply with the following terms designed to
-						ensure a fair and secure experience for all users.
+				<p className="text-gray-700 mb-6">
+					At Talentank, we respect your privacy and are committed to protecting your personal information. This Privacy Policy
+					outlines the types of data we collect, how we use it, and the measures we take to keep it safe.
+				</p>
+
+				<section className="mb-6">
+					<h2 className="text-xl font-semibold mb-3">1. Information We Collect</h2>
+					<p className="text-gray-700">
+						We collect personal information such as your name, email address, phone number, and professional background when you
+						register or use our platform. We also collect usage data through cookies and analytics tools.
 					</p>
-				</div>
+				</section>
 
-				<div className="space-y-6">
-					<section>
-						<h2 className="text-xl font-semibold mb-3">1. Authenticity of Submissions</h2>
-						<p className="text-gray-700">
-							All assessment responses submitted through Talentank must be original, accurate, and truthful. Misrepresentation or
-							the use of external assistance to manipulate outcomes is not permitted.
-						</p>
-					</section>
+				<section className="mb-6">
+					<h2 className="text-xl font-semibold mb-3">2. How We Use Your Information</h2>
+					<p className="text-gray-700">
+						Your information is used to provide and improve our services, personalize your experience, communicate with you,
+						process transactions, and comply with legal obligations.
+					</p>
+				</section>
 
-					<section>
-						<h2 className="text-xl font-semibold mb-3">2. Platform Integrity and Enforcement</h2>
-						<p className="text-gray-700">
-							Talentank is committed to maintaining a trusted environment. We reserve the right to suspend or terminate accounts
-							found misusing the platform, engaging in fraudulent behavior, or violating our usage guidelines.
-						</p>
-					</section>
+				<section className="mb-6">
+					<h2 className="text-xl font-semibold mb-3">3. Data Protection</h2>
+					<p className="text-gray-700">
+						We implement appropriate technical and organizational measures to protect your personal data from unauthorized access,
+						alteration, disclosure, or destruction.
+					</p>
+				</section>
 
-					<section>
-						<h2 className="text-xl font-semibold mb-3">3. Subscription and Payments</h2>
-						<p className="text-gray-700">
-							All subscription payments are governed by our refund and cancellation policies. Please review them carefully before
-							subscribing to ensure you understand your rights and obligations.
-						</p>
-					</section>
+				<section className="mb-6">
+					<h2 className="text-xl font-semibold mb-3">4. Sharing Your Data</h2>
+					<p className="text-gray-700">
+						We do not sell or rent your personal information. We may share it with trusted third-party service providers for
+						payment processing, analytics, or customer support—only to the extent necessary to perform these services.
+					</p>
+				</section>
 
-					<section>
-						<h2 className="text-xl font-semibold mb-3">4. Prohibited Activities</h2>
-						<p className="text-gray-700">
-							Unauthorized access, data scraping, automated extraction, or any attempt to disrupt the normal functioning of the
-							platform is strictly prohibited. Legal action may be taken in response to any violations.
-						</p>
-					</section>
-				</div>
+				<section className="mb-6">
+					<h2 className="text-xl font-semibold mb-3">5. Your Rights</h2>
+					<p className="text-gray-700">
+						You have the right to access, correct, or delete your personal data. You may also object to certain data processing
+						activities. To exercise these rights, please contact us at the address below.
+					</p>
+				</section>
+
+				<section className="mb-6">
+					<h2 className="text-xl font-semibold mb-3">6. Changes to This Policy</h2>
+					<p className="text-gray-700">
+						We may update this Privacy Policy from time to time. Changes will be posted on this page with a revised date. Please
+						review it periodically.
+					</p>
+				</section>
 
 				<div className="mt-8 border-t pt-6">
-					<p className="text-gray-700">By continuing to use Talentank, you acknowledge and agree to abide by this policy.</p>
-					<p className="mt-4 text-gray-700">
-						For any questions or concerns regarding this Privacy Policy, please contact us at{' '}
+					<p className="text-gray-700">
+						If you have any questions or concerns regarding this Privacy Policy, please contact us at{' '}
 						<a href="mailto:Support@talentank.in" className="text-blue-600 hover:underline">
 							Support@talentank.in
 						</a>
