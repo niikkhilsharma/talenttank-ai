@@ -57,7 +57,7 @@ export default function CancellationRefundPolicy() {
 						</p>
 					</section>
 					<section>
-						<h2 className="text-xl font-semibold mb-3">4. Refund Policy</h2>
+						<h2 className="text-xl font-semibold mb-3">5. Refund Policy</h2>
 						<p className="text-gray-700">
 							All Refunds will be Processed & Credited to original Payment Mode within 6 to 8 business days.
 						</p>
