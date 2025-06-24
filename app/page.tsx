@@ -26,8 +26,8 @@ export default function LandingPage() {
 										AI-Powered Contests Tailored to Your Expertise
 									</h1>
 									<p className="max-w-[600px] text-muted-foreground md:text-xl">
-										Engage in personalized quiz contests that adapt to your profession and skill level, powered by advanced AI to help
-										you learn and grow.
+										Engage in adaptive learning experiences designed for your profession and skill level, powered by intelligent AI
+										to help you grow.
 									</p>
 								</div>
 								<div className="flex flex-col gap-2 min-[400px]:flex-row">

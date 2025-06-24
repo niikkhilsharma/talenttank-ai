@@ -1,22 +1,23 @@
-import { Brain } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { auth } from '@/auth'
 
 import NavbarProfileDropdown from './navbar-profile-dropdown'
 import NavbarCenter from './navbar-center'
+import Image from 'next/image'
 
 export async function Navbar() {
 	const session = await auth()
 	const user = session?.user
 
 	return (
-		<div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+		<div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 overflow-y-hidden">
 			<div className="px-4 mx-auto z-40 w-full">
 				<div className="container mx-auto  flex h-16 items-center justify-between">
 					<Link href={'/'} className="flex items-center gap-2">
-						<Brain className="h-6 w-6 text-primary" />
-						<span className="text-xl font-bold">QuizGenius</span>
+						{/* <Brain className="h-6 w-6 text-primary" /> */}
+						{/* <span className="text-xl font-bold">QuizGenius</span> */}
+						<Image src={'/assets/images/logo.jpeg'} width={1024} height={1024} className="w-16 h-16" alt="Talentank AI" />
 					</Link>
 
 					<NavbarCenter />

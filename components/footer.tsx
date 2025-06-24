@@ -32,7 +32,7 @@ export default function Footer() {
 				</div>
 			</section>
 
-			<footer className="w-full border-t py-6 md:py-0">
+			<footer className="w-full border-t py-6 md:py-0 md:mb-4">
 				<div className="container flex flex-col mx-auto items-center justify-between gap-4 md:h-24 md:flex-row">
 					<div className="flex items-center gap-2">
 						<Brain className="h-5 w-5 text-primary" />
@@ -53,7 +53,7 @@ export default function Footer() {
 						</Link>
 					</div>
 				</div>
-				<p className="text-center text-xs">THIS WEBSITE IS MANGED BY AANAARA</p>
+				<p className="text-center text-xs">THIS WEBSITE IS MANGED BY SASHAKT ENTERPRISES PRIVATE LIMITED</p>
 			</footer>
 		</>
 	)
