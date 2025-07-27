@@ -1,18 +1,28 @@
+// C:\PERSONAL FILES\SANDBOX\WEB PROJECTS\TALENTTANK-AI\COMPONENTS\pricing-card.tsx
+
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Check } from 'lucide-react'
-import PaymentButton from './razorpay'
+// import PaymentButton from './razorpay' // Step 1: Remove the old Razorpay button import
+import { PhonePeButton } from './phonepe-button' // Step 2: Import our new PhonePe button
 
 interface PricingCardProps {
 	title: string
-	price: string
+	price: string // Keep price as string for display (e.g., "$10", "Custom")
+	amount: number // Add a new 'amount' prop for the actual numeric value for payment
 	description: string
 	features: string[]
-	buttonText: string
-	buttonVariant: 'default' | 'outline'
+	buttonText: string // Kept for potential future use
 	highlighted?: boolean
 }
 
-export default function PricingCard({ title, price, description, features, highlighted = false }: PricingCardProps) {
+export default function PricingCard({ 
+    title, 
+    price, 
+    amount, 
+    description, 
+    features, 
+    highlighted = false 
+}: PricingCardProps) {
 	return (
 		<Card className={`flex flex-col ${highlighted ? 'border-primary shadow-lg scale-105' : ''}`}>
 			<CardHeader>
@@ -33,11 +43,10 @@ export default function PricingCard({ title, price, description, features, highl
 					))}
 				</ul>
 			</CardContent>
-			<CardFooter>
-				{/* <Button variant={buttonVariant} className="w-full" asChild>
-					<Link href="/signup">{buttonText}</Link>
-				</Button> */}
-				<PaymentButton />
+			<CardFooter className="w-full">
+				{/* Step 3: Replace the old button with our new PhonePeButton */}
+                {/* We pass the 'amount' prop to the button so it knows how much to charge */}
+				<PhonePeButton amount={amount} />
 			</CardFooter>
 		</Card>
 	)
