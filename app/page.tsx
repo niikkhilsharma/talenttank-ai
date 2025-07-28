@@ -165,6 +165,7 @@ export default function LandingPage() {
                   <video
                     src="/assets/images/talentank.mp4"
                     autoPlay
+                    loop
                     muted
                     className="z-10"
                   ></video>

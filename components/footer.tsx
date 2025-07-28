@@ -36,7 +36,7 @@ export default function Footer() {
 				<div className="container flex flex-col mx-auto items-center justify-between gap-4 md:h-24 md:flex-row">
 					<div className="flex items-center gap-2">
 						<Brain className="h-5 w-5 text-primary" />
-						<p className="text-sm font-medium">© {new Date().getFullYear()} QuizGenius. All rights reserved.</p>
+						<p className="text-sm font-medium">© {new Date().getFullYear()} TalentTank. All rights reserved.</p>
 					</div>
 					<div className="flex flex-wrap gap-4">
 						<Link href="/refund-policy" className="text-sm text-muted-foreground hover:text-foreground">

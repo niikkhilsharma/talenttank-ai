@@ -15,9 +15,7 @@ export async function Navbar() {
 			<div className="px-4 mx-auto z-40 w-full">
 				<div className="container mx-auto  flex h-16 items-center justify-between">
 					<Link href={'/'} className="flex items-center gap-2">
-						{/* <Brain className="h-6 w-6 text-primary" /> */}
-						{/* <span className="text-xl font-bold">QuizGenius</span> */}
-						<Image src={'/assets/images/logo.jpeg'} width={1024} height={1024} className="w-16 h-16" alt="Talentank AI" />
+						<Image src={'/assets/images/logo.png'} width={1024} height={1024} className="w-16 h-16" alt="Talentank AI" />
 					</Link>
 
 					<NavbarCenter />
