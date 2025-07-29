@@ -1,5 +1,7 @@
 // C:\PERSONAL FILES\SANDBOX\WEB PROJECTS\TALENTTANK-AI\app\page.tsx
 
+'use client'; 
+
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -14,12 +16,30 @@ import {
 import TestimonialCard from "@/components/testimonial-card";
 import FeatureCard from "@/components/feature-card";
 import PricingCard from "@/components/pricing-card";
+import { useState } from "react";
+import Script from "next/script";
 
 export default function LandingPage() {
-  // ... (The rest of the component remains the same until the pricing section)
+  const [isSdkReady, setIsSdkReady] = useState(false);
 
   return (
     <div className="flex min-h-screen flex-col">
+      {/* 
+        --- THE FIX IS HERE ---
+        Using the new, correct URL for the PhonePe Test SDK
+      */}
+      <Script
+        src="https://mercury.phonepe.com/web/bundle/checkout.js"
+        strategy="lazyOnload"
+        onReady={() => {
+          console.log("PhonePe SDK has loaded successfully.");
+          setIsSdkReady(true);
+        }}
+        onError={(e) => {
+            console.error("Failed to load PhonePe SDK", e);
+        }}
+      />
+
       <main className="flex-1 mx-auto">
         {/* Hero Section */}
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
@@ -192,7 +212,6 @@ export default function LandingPage() {
             <div className="mx-auto grid max-w-xl items-start gap-6 py-12 lg:grid-cols-1">
               <PricingCard
                 title="Professional"
-                // --- PRICE HAS BEEN UPDATED HERE ---
                 price="₹599"
                 amount={599}
                 description="Ideal for serious learners"
@@ -203,8 +222,9 @@ export default function LandingPage() {
                   "Priority support",
                   "Custom development paths",
                 ]}
-                buttonText="Subscribe Now" // This prop is no longer used by the card itself
+                buttonText="Subscribe Now"
                 highlighted={true}
+                sdkReady={isSdkReady} 
               />
             </div>
           </div>
