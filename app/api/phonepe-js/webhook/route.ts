@@ -7,48 +7,44 @@ import { PaymentStatus } from '@prisma/client';
 
 export async function POST(req: NextRequest) {
   try {
-    const base64Body = await req.text(); // PhonePe sends the response as a Base64 string in the body
+    const { response: base64Body } = await req.json();
     const signature = req.headers.get("x-verify");
 
-    if (!signature) {
-        console.error("PhonePe JS SDK Webhook: Missing X-VERIFY signature header.");
-        return NextResponse.json({ success: false, message: 'Missing signature' }, { status: 400 });
+    if (!base64Body || !signature) {
+        console.error("PhonePe Webhook: Missing response body or X-VERIFY signature.");
+        return NextResponse.json({ success: false, message: 'Missing body or signature' }, { status: 400 });
     }
 
-    const clientSecret = process.env.PHONEPE_CLIENT_SECRET!;
+    const saltKey = process.env.PHONEPE_CLIENT_SECRET!;
+    const saltIndex = 1;
 
-    // --- 1. Verify the Webhook Signature (Security Check) ---
-    // The signature for the webhook is calculated on the Base64 body + the Client Secret
-    const calculatedSignature = crypto.createHash('sha256').update(base64Body + clientSecret).digest('hex');
+    const calculatedSignature = crypto.createHash('sha256').update(base64Body + saltKey).digest('hex') + `###${saltIndex}`;
 
     if (calculatedSignature !== signature) {
-        console.error("PhonePe JS SDK Webhook: Invalid signature. Potentially fraudulent request.");
+        console.error("PhonePe Webhook: Invalid signature.");
         return NextResponse.json({ success: false, message: 'Invalid signature' }, { status: 401 });
     }
 
-    // --- 2. Decode the Body and Process the Webhook Data ---
-    const decodedBody = Buffer.from(base64Body, 'base64').toString('utf-8');
-    const webhookData = JSON.parse(decodedBody);
+    const decodedBody = JSON.parse(Buffer.from(base64Body, 'base64').toString('utf-8'));
+    const merchantTransactionId = decodedBody.data.merchantTransactionId;
+    const transactionStatus = decodedBody.code;
 
-    const orderId = webhookData.merchantTransactionId;
-    const transactionStatus = webhookData.code; // e.g., 'PAYMENT_SUCCESS', 'PAYMENT_ERROR'
+    console.log(`Webhook received for transaction: ${merchantTransactionId} with status: ${transactionStatus}`);
 
-    // --- 3. Find the Original Transaction in Our Database ---
     const paymentRecord = await prisma.payment.findUnique({
-        where: { providerPaymentId: orderId },
+        where: { providerPaymentId: merchantTransactionId },
     });
 
     if (!paymentRecord) {
-        console.error(`PhonePe JS SDK Webhook: No payment record found for order ID: ${orderId}`);
+        console.error(`PhonePe Webhook: No payment record found for transaction ID: ${merchantTransactionId}`);
         return NextResponse.json({ success: true, message: 'Acknowledged, but no record found.' });
     }
 
     if (paymentRecord.status !== 'PENDING') {
-        console.log(`PhonePe JS SDK Webhook: Order ${orderId} already processed. Status is ${paymentRecord.status}.`);
+        console.log(`PhonePe Webhook: Transaction ${merchantTransactionId} already processed. Status: ${paymentRecord.status}.`);
         return NextResponse.json({ success: true, message: 'Already processed.' });
     }
     
-    // --- 4. Update Database Based on Payment Status ---
     if (transactionStatus === 'PAYMENT_SUCCESS') {
         const amountPaid = paymentRecord.amount;
         const creditsToAdd = Math.floor(amountPaid);
@@ -56,7 +52,10 @@ export async function POST(req: NextRequest) {
         await prisma.$transaction(async (tx) => {
             await tx.payment.update({
                 where: { id: paymentRecord.id },
-                data: { status: PaymentStatus.COMPLETED, paymentMethod: webhookData.paymentInstrument.type },
+                data: { 
+                    status: PaymentStatus.COMPLETED,
+                    paymentMethod: decodedBody.data.paymentInstrument.type 
+                },
             });
             await tx.user.update({
                 where: { id: paymentRecord.userId },
@@ -67,21 +66,25 @@ export async function POST(req: NextRequest) {
                 },
             });
         });
-        console.log(`Successfully processed PhonePe JS SDK payment for order ${orderId}`);
+        console.log(`Successfully processed PAYMENT_SUCCESS for transaction ${merchantTransactionId}`);
 
     } else {
         await prisma.payment.update({
             where: { id: paymentRecord.id },
             data: { status: PaymentStatus.FAILED },
         });
-        console.log(`PhonePe JS SDK payment failed for order ${orderId}. Status: ${transactionStatus}`);
+        console.log(`Payment failed for transaction ${merchantTransactionId}. Status: ${transactionStatus}`);
     }
     
-    // --- 5. Acknowledge Receipt to PhonePe ---
-    return NextResponse.json({ success: true, message: "Webhook received and processed." });
+    return NextResponse.json({ success: true, message: "Webhook received and processed successfully." });
 
-  } catch (error: any) {
-    console.error('Error processing PhonePe JS SDK webhook:', error);
+  } catch (error: unknown) { // <-- CORRECTED TYPE
+    // Type guard to safely access error properties
+    if (error instanceof Error) {
+        console.error('Error processing PhonePe webhook:', error.message, error.stack);
+    } else {
+        console.error('An unknown error occurred in the webhook:', error);
+    }
     return NextResponse.json({ success: false, error: 'Internal Server Error' }, { status: 500 });
   }
 }

@@ -1,4 +1,5 @@
 // C:\PERSONAL FILES\SANDBOX\WEB PROJECTS\TALENTTANK-AI\COMPONENTS\phonepe-sdk-button.tsx
+// --- FINAL VERSION: NO 'any', NO 'toast', USES 'alert()' ---
 
 'use client';
 
@@ -6,15 +7,38 @@ import { useState } from 'react';
 import { Button } from './ui/button';
 import { Loader2 } from 'lucide-react';
 
+// --- Type Definitions for PhonePe Objects ---
+
+interface PhonePeCallbackResponse {
+  code: 'PAYMENT_SUCCESS' | 'PAYMENT_ERROR' | 'PAYMENT_PENDING' | string;
+  merchantTransactionId: string;
+}
+
+// FIX 1: Replaced 'any' with a specific type for the instrument response.
+interface PhonePeInstrumentResponse {
+  type: 'PAY_PAGE';
+  redirectInfo: {
+    url: string;
+    method: string;
+  };
+}
+
+interface PhonePeCheckoutOptions {
+  instrumentResponse: PhonePeInstrumentResponse; // Now strongly typed
+  merchantId: string;
+  callback: (response: PhonePeCallbackResponse) => void;
+}
+
 declare global {
   interface Window {
-    // The new SDK uses the PhonePeCheckout object
     PhonePeCheckout?: {
-      open: (options: any) => void;
+      open: (options: PhonePeCheckoutOptions) => void;
       close: () => void;
     };
   }
 }
+
+// --- Component Definition ---
 
 interface PhonePeSDKButtonProps {
   amount: number;
@@ -23,24 +47,22 @@ interface PhonePeSDKButtonProps {
 
 export function PhonePeSDKButton({ amount, sdkReady }: PhonePeSDKButtonProps) {
   const [isProcessing, setIsProcessing] = useState(false);
+  // FIX 2: Removed 'useToast' hook.
 
   const handlePayment = async () => {
-    // Check for the new object
     if (!sdkReady || typeof window.PhonePeCheckout === 'undefined') {
-      console.error("handlePayment called before PhonePeCheckout SDK was ready.");
-      alert("Payment gateway is not available. Please refresh and try again.");
+      console.error("SDK not ready or PhonePeCheckout object not found.");
+      alert("Payment gateway is not available. Please refresh and try again."); // Using alert
       return;
     }
     
     if (amount <= 0) {
-      alert("Invalid Amount: Payment amount must be greater than zero.");
+      alert("Invalid Amount: Payment amount must be greater than zero."); // Using alert
       return;
     }
 
     setIsProcessing(true);
     try {
-      // This backend API call now needs to do more. 
-      // It should return the full response from PhonePe's /pg/v1/pay API.
       const response = await fetch('/api/phonepe-js/payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -49,35 +71,30 @@ export function PhonePeSDKButton({ amount, sdkReady }: PhonePeSDKButtonProps) {
 
       const data = await response.json();
 
-      // We expect the full payload from the backend now
       if (data.success && data.instrumentResponse) {
-        
-        // The new SDK method is .open()
         window.PhonePeCheckout.open({
-          "instrumentResponse": data.instrumentResponse, // Pass the instrumentResponse
-          "merchantId": data.merchantId,
-          "callback": function (response: any) {
-            console.log("PhonePe Callback Response:", response);
-            if (response.code === 'PAYMENT_SUCCESS') {
-              // On success, redirect to your status page
-              window.location.href = `/user/payment/status?orderId=${response.merchantTransactionId}`;
+          instrumentResponse: data.instrumentResponse,
+          merchantId: data.merchantId,
+          callback: function (callbackResponse) {
+            if (callbackResponse.code === 'PAYMENT_SUCCESS') {
+              alert("Payment Successful! Redirecting you to your reports..."); // Using alert
+              window.location.href = `/user/all-reports?transactionId=${data.merchantTransactionId}`;
             } else {
-              // Handle other statuses (e.g., PAYMENT_ERROR, PAYMENT_PENDING, etc.)
-              alert(`Payment did not complete. Status: ${response.code}`);
+              alert(`Payment Not Completed. Status: ${callbackResponse.code}`); // Using alert
               setIsProcessing(false);
-              window.PhonePeCheckout?.close(); // Close the popup on failure
+              window.PhonePeCheckout?.close();
             }
           }
         });
 
       } else {
-        console.error('Failed to get payment instrument from backend:', data.error);
-        alert(`Could not initiate payment: ${data.error || "Unknown server error."}`);
+        console.error('Backend failed to create payment session:', data.error);
+        alert(`Server Error: Could not initiate payment. ${data.error || "Unknown error."}`); // Using alert
         setIsProcessing(false);
       }
     } catch (error) {
-      console.error('An error occurred during payment setup:', error);
-      alert("Client-Side Error: Could not connect to the payment server.");
+      console.error('Client-side error during payment setup:', error);
+      alert("Client-Side Error: Could not connect to the payment server."); // Using alert
       setIsProcessing(false);
     }
   };
@@ -88,14 +105,15 @@ export function PhonePeSDKButton({ amount, sdkReady }: PhonePeSDKButtonProps) {
     <Button
       onClick={handlePayment}
       disabled={isButtonDisabled}
-      className="w-full"
+      className="w-full text-lg py-6"
+      size="lg"
     >
       {isProcessing ? (
-        <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Processing...</>
+        <><Loader2 className="mr-2 h-5 w-5 animate-spin" />Processing...</>
       ) : !sdkReady ? (
-        <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Initializing Gateway...</>
+        <><Loader2 className="mr-2 h-5 w-5 animate-spin" />Loading Gateway...</>
       ) : (
-        'Pay Now'
+        'Subscribe Now'
       )}
     </Button>
   );

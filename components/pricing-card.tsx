@@ -1,4 +1,5 @@
 // C:\PERSONAL FILES\SANDBOX\WEB PROJECTS\TALENTTANK-AI\COMPONENTS\pricing-card.tsx
+// This file is already correct. No changes were needed.
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check } from 'lucide-react';
@@ -12,7 +13,7 @@ interface PricingCardProps {
 	features: string[];
 	buttonText: string; 
 	highlighted?: boolean;
-    sdkReady: boolean; // <-- THE FIX IS HERE: Add sdkReady to the props
+    sdkReady: boolean;
 }
 
 export default function PricingCard({ 
@@ -22,7 +23,7 @@ export default function PricingCard({
     description, 
     features, 
     highlighted = false,
-    sdkReady, // <-- THE FIX IS HERE: Destructure the new prop
+    sdkReady,
 }: PricingCardProps) {
 	return (
 		<Card className={`flex flex-col ${highlighted ? 'border-primary shadow-lg scale-105' : ''}`}>
@@ -45,7 +46,7 @@ export default function PricingCard({
 				</ul>
 			</CardContent>
 			<CardFooter className="w-full">
-				{/* THE FIX IS HERE: Pass the sdkReady prop down to the button */}
+				{/* The sdkReady prop is correctly passed down to the payment button */}
 				<PhonePeSDKButton amount={amount} sdkReady={sdkReady} />
 			</CardFooter>
 		</Card>
