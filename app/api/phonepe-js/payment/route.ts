@@ -19,13 +19,23 @@ export async function POST(request: Request) {
         }
 
         const merchantId = process.env.PHONEPE_MERCHANT_ID;
-        const saltKey = process.env.PHONEPE_CLIENT_SECRET;
+        const saltKey = process.env.PHONEPE_SALT_KEY;
+        const saltIndex = process.env.PHONEPE_SALT_INDEX;
         const callbackUrl = process.env.PHONEPE_WEBHOOK_URL;
         const appUrl = process.env.NEXT_PUBLIC_APP_URL;
-        const saltIndex = 1;
 
-        if (!merchantId || !saltKey || !callbackUrl || !appUrl) {
-            console.error('CRITICAL: Missing required environment variables (Merchant ID, Salt Key, Webhook URL, or App URL).');
+        // ======================= DEBUGGING BLOCK =======================
+        // This will print the values to your server console (the terminal running `npm run dev`)
+        console.log("--- DEBUGGING PHONEPE CREDENTIALS ---");
+        console.log("MERCHANT_ID:", merchantId);
+        console.log("SALT_KEY:", saltKey);
+        console.log("SALT_INDEX:", saltIndex);
+        console.log("CALLBACK_URL:", callbackUrl);
+        console.log("---------------------------------------");
+        // ===============================================================
+
+        if (!merchantId || !saltKey || !saltIndex || !callbackUrl || !appUrl) {
+            console.error('CRITICAL: Missing required environment variables. Check the debug logs above.');
             return NextResponse.json({ success: false, error: 'Server configuration error.' }, { status: 500 });
         }
         
@@ -40,10 +50,10 @@ export async function POST(request: Request) {
             merchantId: merchantId,
             merchantTransactionId: merchantTransactionId,
             merchantUserId: session.user.id,
-            amount: amount * 100, // Amount in paise
-            redirectUrl: `${appUrl}/user/all-reports`, // Redirect user to a success/status page
+            amount: amount * 100,
+            redirectUrl: `${appUrl}/payment/status/${merchantTransactionId}`,
             redirectMode: 'POST',
-            callbackUrl: callbackUrl, // Webhook for server-to-server confirmation
+            callbackUrl: callbackUrl,
             paymentInstrument: { type: 'PAY_PAGE' }
         };
 
@@ -51,8 +61,6 @@ export async function POST(request: Request) {
         const base64Payload = Buffer.from(payload).toString('base64');
         
         const apiEndpoint = '/pg/v1/pay';
-        const phonePePayUrl = `https://api-preprod.phonepe.com/apis/pg-sandbox${apiEndpoint}`;
-
         const stringToHash = base64Payload + apiEndpoint + saltKey;
         const sha256 = crypto.createHash('sha256').update(stringToHash).digest('hex');
         const xVerify = `${sha256}###${saltIndex}`;
@@ -62,18 +70,14 @@ export async function POST(request: Request) {
             headers: { 'Content-Type': 'application/json', 'X-VERIFY': xVerify, 'accept': 'application/json' },
             body: JSON.stringify({ request: base64Payload }),
         };
+        
+        const phonePePayUrl = `https://api-preprod.phonepe.com/apis/pg-sandbox${apiEndpoint}`;
 
         const response = await fetch(phonePePayUrl, requestOptions);
         const data = await response.json();
 
         if (data.success && data.data?.instrumentResponse) {
-            console.log("PhonePe session created successfully!");
-            return NextResponse.json({
-                success: true,
-                instrumentResponse: data.data.instrumentResponse,
-                merchantId: data.merchantId,
-                merchantTransactionId: data.data.merchantTransactionId
-            });
+            return NextResponse.json(data);
         } else {
             console.error('PhonePe returned an error:', data);
             await prisma.payment.delete({ where: { providerPaymentId: merchantTransactionId } });
