@@ -10,14 +10,6 @@ interface PhonePeCallbackResponse {
   merchantTransactionId: string;
 }
 
-interface PhonePeInstrumentResponse {
-  type: 'PAY_PAGE';
-  redirectInfo: {
-    url: string;
-    method: string;
-  };
-}
-
 declare global {
   interface Window {
     PhonePeCheckout?: {
@@ -41,10 +33,11 @@ export function PhonePeSDKButton({ amount, sdkReady }: PhonePeSDKButtonProps) {
 
   const handlePayment = async () => {
     if (!sdkReady || typeof window.PhonePeCheckout?.transact !== 'function') {
-      console.error("SDK is not ready or PhonePeCheckout.transact unavailable.");
+      console.error("SDK not ready or transact() unavailable");
       alert("Payment gateway is not available. Please refresh and try again.");
       return;
     }
+
     if (amount <= 0) {
       alert("Invalid Amount: Payment amount must be greater than zero.");
       return;
@@ -52,12 +45,12 @@ export function PhonePeSDKButton({ amount, sdkReady }: PhonePeSDKButtonProps) {
 
     setIsProcessing(true);
     try {
-      const response = await fetch('/api/phonepe-js/payment', {
+      const res = await fetch('/api/phonepe-js/payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount }),
       });
-      const data = await response.json();
+      const data = await res.json();
 
       if (data.success && data.instrumentResponse?.redirectInfo?.url) {
         const tokenUrl = data.instrumentResponse.redirectInfo.url;
@@ -88,9 +81,9 @@ export function PhonePeSDKButton({ amount, sdkReady }: PhonePeSDKButtonProps) {
     }
   };
 
-  const isDisabled = !sdkReady || isProcessing;
+  const disabled = !sdkReady || isProcessing;
   return (
-    <Button onClick={handlePayment} disabled={isDisabled} className="w-full text-lg py-6" size="lg">
+    <Button onClick={handlePayment} disabled={disabled} className="w-full text-lg py-6" size="lg">
       {isProcessing ? (
         <>
           <Loader2 className="mr-2 h-5 w-5 animate-spin" />

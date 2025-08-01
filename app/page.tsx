@@ -1,5 +1,4 @@
-// C:\PERSONAL FILES\SANDBOX\WEB PROJECTS\TALENTTANK-AI\app\page.tsx
-'use client'; 
+'use client';
 
 import Link from "next/link";
 import Image from "next/image";
@@ -23,22 +22,18 @@ export default function LandingPage() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      {/* 
-        --- THE FINAL SDK SCRIPT IMPLEMENTATION ---
-        This loads the one official PhonePe SDK script. The 'onReady' callback
-        updates our state, which then enables the payment button in child components.
-      */}
+      {/* Load PhonePe SDK */}
       <Script
         id="phonepe-checkout-sdk"
         src="https://mercury.phonepe.com/web/bundle/checkout.js"
-        strategy="afterInteractive" // Use a reliable loading strategy
+        strategy="afterInteractive"
         onReady={() => {
-          console.log("PhonePe SDK has been successfully loaded and is ready.");
+          console.log("PhonePe SDK loaded.");
           setIsSdkReady(true);
         }}
         onError={(e) => {
-            console.error("CRITICAL: Failed to load the PhonePe Checkout SDK.", e);
-            alert("A critical error occurred while loading the payment gateway. Please check your internet connection or ad-blocker and refresh the page.");
+          console.error("Failed to load PhonePe SDK", e);
+          alert("Failed to load payment gateway. Please refresh.");
         }}
       />
 
@@ -53,7 +48,7 @@ export default function LandingPage() {
                     AI-Powered Contests Tailored to Your Expertise
                   </h1>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                   "Engage in adaptive learning experiences designed for your profession and skill level, powered by intelligent AI to help you grow."
+                    "Engage in adaptive learning experiences designed for your profession and skill level, powered by intelligent AI to help you grow."
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
@@ -89,52 +84,24 @@ export default function LandingPage() {
                 <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
                   Everything you need to excel
                 </h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Our AI-powered platform offers a comprehensive suite of
-                  features designed to enhance your development experience.
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed">
+                  Our AI-powered platform offers a comprehensive suite of features designed to enhance your development experience.
                 </p>
               </div>
             </div>
             <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3">
-              <FeatureCard
-                icon={<Brain className="h-10 w-10 text-primary" />}
-                title="AI-Tailored Questions"
-                description="Questions dynamically generated based on your profession, expertise level, and development goals."
-              />
-              <FeatureCard
-                icon={<BarChart3 className="h-10 w-10 text-primary" />}
-                title="Adaptive Difficulty"
-                description="Contests that automatically adjust difficulty based on your performance and progress."
-              />
-              <FeatureCard
-                icon={<Users className="h-10 w-10 text-primary" />}
-                title="Peer Competitions"
-                description="Compete with professionals in your field to benchmark your knowledge and skills."
-              />
-              <FeatureCard
-                icon={<Clock className="h-10 w-10 text-primary" />}
-                title="Real-time Feedback"
-                description="Instant, detailed explanations and feedback to accelerate your development."
-              />
-              <FeatureCard
-                icon={<Award className="h-10 w-10 text-primary" />}
-                title="Skill Certification"
-                description="Earn certificates and badges to showcase your expertise and achievements."
-              />
-              <FeatureCard
-                icon={<CheckCircle2 className="h-10 w-10 text-primary" />}
-                title="Progress Tracking"
-                description="Comprehensive analytics to monitor your improvement over time."
-              />
+              <FeatureCard icon={<Brain className="h-10 w-10 text-primary" />} title="AI-Tailored Questions" description="Questions dynamically generated based on your profession, expertise level, and development goals." />
+              <FeatureCard icon={<BarChart3 className="h-10 w-10 text-primary" />} title="Adaptive Difficulty" description="Contests that automatically adjust difficulty based on your performance and progress." />
+              <FeatureCard icon={<Users className="h-10 w-10 text-primary" />} title="Peer Competitions" description="Compete with professionals in your field to benchmark your knowledge and skills." />
+              <FeatureCard icon={<Clock className="h-10 w-10 text-primary" />} title="Real-time Feedback" description="Instant, detailed explanations and feedback to accelerate your development." />
+              <FeatureCard icon={<Award className="h-10 w-10 text-primary" />} title="Skill Certification" description="Earn certificates and badges to showcase your expertise and achievements." />
+              <FeatureCard icon={<CheckCircle2 className="h-10 w-10 text-primary" />} title="Progress Tracking" description="Comprehensive analytics to monitor your improvement over time." />
             </div>
           </div>
         </section>
 
         {/* How It Works Section */}
-        <section
-          id="how-it-works"
-          className="w-full py-12 md:py-24 lg:py-32 bg-muted/50"
-        >
+        <section id="how-it-works" className="w-full py-12 md:py-24 lg:py-32 bg-muted/50">
           <div className="container">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -144,53 +111,32 @@ export default function LandingPage() {
                 <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
                   How TalentTank Works
                 </h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed">
                   Get started in minutes and begin your journey to mastery.
                 </p>
               </div>
             </div>
             <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3">
-              <div className="flex flex-col items-center space-y-4 rounded-lg border p-6 shadow-sm">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground">
-                  1
+              {["Create Your Profile", "Select a Contest", "Learn & Improve"].map((title, index) => (
+                <div key={index} className="flex flex-col items-center space-y-4 rounded-lg border p-6 shadow-sm">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground">
+                    {index + 1}
+                  </div>
+                  <h3 className="text-xl font-bold">{title}</h3>
+                  <p className="text-center text-muted-foreground">
+                    {[
+                      "Tell us about your profession, expertise level, and development goals.",
+                      "Choose from AI-recommended contests or create a custom challenge.",
+                      "Participate, receive feedback, and track your progress over time."
+                    ][index]}
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold">Create Your Profile</h3>
-                <p className="text-center text-muted-foreground">
-                  Tell us about your profession, expertise level, and
-                  development goals.
-                </p>
-              </div>
-              <div className="flex flex-col items-center space-y-4 rounded-lg border p-6 shadow-sm">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground">
-                  2
-                </div>
-                <h3 className="text-xl font-bold">Select a Contest</h3>
-                <p className="text-center text-muted-foreground">
-                  Choose from AI-recommended contests or create a custom
-                  challenge.
-                </p>
-              </div>
-              <div className="flex flex-col items-center space-y-4 rounded-lg border p-6 shadow-sm">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground">
-                  3
-                </div>
-                <h3 className="text-xl font-bold">Learn & Improve</h3>
-                <p className="text-center text-muted-foreground">
-                  Participate, receive feedback, and track your progress over
-                  time.
-                </p>
-              </div>
+              ))}
             </div>
             <div className="flex justify-center mt-8">
               <div className="relative w-full max-w-4xl rounded-xl border bg-background p-2 shadow-lg">
                 <div className="aspect-video w-full rounded-md bg-muted flex items-center justify-center">
-                  <video
-                    src="/assets/images/talentank.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    className="z-10"
-                  ></video>
+                  <video src="/assets/images/talentank.mp4" autoPlay loop muted className="z-10"></video>
                 </div>
               </div>
             </div>
@@ -205,9 +151,8 @@ export default function LandingPage() {
                 <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
                   Simple, Transparent Pricing
                 </h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Choose the plan that's right for you and start improving
-                  today.
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed">
+                  Choose the plan that's right for you and start improving today.
                 </p>
               </div>
             </div>
@@ -225,18 +170,15 @@ export default function LandingPage() {
                   "Custom development paths",
                 ]}
                 buttonText="Subscribe Now"
-                highlighted={true}
-                sdkReady={isSdkReady} 
+                highlighted
+                sdkReady={isSdkReady}
               />
             </div>
           </div>
         </section>
 
         {/* Testimonials Section */}
-        <section
-          id="testimonials"
-          className="w-full py-12 md:py-24 lg:py-32 bg-muted/50"
-        >
+        <section id="testimonials" className="w-full py-12 md:py-24 lg:py-32 bg-muted/50">
           <div className="container px-4 mx-auto md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -246,9 +188,8 @@ export default function LandingPage() {
                 <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
                   What Our Users Say
                 </h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Hear from professionals who have transformed their development
-                  experience with TalentTank.
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed">
+                  Hear from professionals who have transformed their development experience with TalentTank.
                 </p>
               </div>
             </div>
