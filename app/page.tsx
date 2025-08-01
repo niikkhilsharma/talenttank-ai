@@ -1,5 +1,4 @@
 // C:\PERSONAL FILES\SANDBOX\WEB PROJECTS\TALENTTANK-AI\app\page.tsx
-
 'use client'; 
 
 import Link from "next/link";
@@ -25,18 +24,21 @@ export default function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col">
       {/* 
-        --- THE FIX IS HERE ---
-        Using the new, correct URL for the PhonePe Test SDK
+        --- THE FINAL SDK SCRIPT IMPLEMENTATION ---
+        This loads the one official PhonePe SDK script. The 'onReady' callback
+        updates our state, which then enables the payment button in child components.
       */}
       <Script
+        id="phonepe-checkout-sdk"
         src="https://mercury.phonepe.com/web/bundle/checkout.js"
-        strategy="lazyOnload"
+        strategy="afterInteractive" // Use a reliable loading strategy
         onReady={() => {
-          console.log("PhonePe SDK has loaded successfully.");
+          console.log("PhonePe SDK has been successfully loaded and is ready.");
           setIsSdkReady(true);
         }}
         onError={(e) => {
-            console.error("Failed to load PhonePe SDK", e);
+            console.error("CRITICAL: Failed to load the PhonePe Checkout SDK.", e);
+            alert("A critical error occurred while loading the payment gateway. Please check your internet connection or ad-blocker and refresh the page.");
         }}
       />
 

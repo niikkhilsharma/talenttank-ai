@@ -1,5 +1,4 @@
-// C:\PERSONAL FILES\SANDBOX\WEB PROJECTS\TALENTTANK-AI\app\layout.tsx
-
+// app/layout.tsx
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
@@ -9,6 +8,8 @@ import { auth } from '@/auth';
 import { AdminNav } from '@/components/admin-nav';
 import TanstackProvider from '@/components/query-client-provider';
 import Footer from '@/components/footer';
+// --- STEP 1: IMPORT THE NEW PROVIDER ---
+import AppSessionProvider from '@/components/session-provider';
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] });
@@ -29,13 +30,15 @@ export default async function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-				{user ? (user.role === 'ADMIN' ? <AdminNav /> : <Navbar />) : <Navbar />}
-				<main className="px-4">
-					<TanstackProvider>{children}</TanstackProvider>
-					<Footer />
-				</main>
-				<Toaster />
-                {/* The Script tag has been removed from here */}
+                {/* --- STEP 2: WRAP YOUR CONTENT WITH THE PROVIDER --- */}
+				<AppSessionProvider>
+					{user ? (user.role === 'ADMIN' ? <AdminNav /> : <Navbar />) : <Navbar />}
+					<main className="px-4">
+						<TanstackProvider>{children}</TanstackProvider>
+						<Footer />
+					</main>
+					<Toaster />
+				</AppSessionProvider>
 			</body>
 		</html>
 	);
