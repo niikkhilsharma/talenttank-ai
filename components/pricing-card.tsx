@@ -1,18 +1,30 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Check } from 'lucide-react'
-import PaymentButton from './razorpay'
+// C:\PERSONAL FILES\SANDBOX\WEB PROJECTS\TALENTTANK-AI\COMPONENTS\pricing-card.tsx
+// This file is already correct. No changes were needed.
+
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Check } from 'lucide-react';
+import { PhonePeSDKButton } from './phonepe-sdk-button';
 
 interface PricingCardProps {
-	title: string
-	price: string
-	description: string
-	features: string[]
-	buttonText: string
-	buttonVariant: 'default' | 'outline'
-	highlighted?: boolean
+	title: string;
+	price: string;
+	amount: number;
+	description: string;
+	features: string[];
+	buttonText: string; 
+	highlighted?: boolean;
+    sdkReady: boolean;
 }
 
-export default function PricingCard({ title, price, description, features, highlighted = false }: PricingCardProps) {
+export default function PricingCard({ 
+    title, 
+    price, 
+    amount, 
+    description, 
+    features, 
+    highlighted = false,
+    sdkReady,
+}: PricingCardProps) {
 	return (
 		<Card className={`flex flex-col ${highlighted ? 'border-primary shadow-lg scale-105' : ''}`}>
 			<CardHeader>
@@ -33,12 +45,10 @@ export default function PricingCard({ title, price, description, features, highl
 					))}
 				</ul>
 			</CardContent>
-			<CardFooter>
-				{/* <Button variant={buttonVariant} className="w-full" asChild>
-					<Link href="/signup">{buttonText}</Link>
-				</Button> */}
-				<PaymentButton />
+			<CardFooter className="w-full">
+				{/* The sdkReady prop is correctly passed down to the payment button */}
+				<PhonePeSDKButton amount={amount} sdkReady={sdkReady} />
 			</CardFooter>
 		</Card>
-	)
+	);
 }

@@ -1,3 +1,5 @@
+// C:\PERSONAL FILES\SANDBOX\WEB PROJECTS\TALENTTANK-AI\app\user\questionnaire\original\page.tsx
+
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
@@ -14,8 +16,11 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { toast } from 'sonner'
 import { Question } from '@/types/questions'
 import { useRouter } from 'next/navigation'
-import PaymentButton from '@/components/razorpay'
+// Step 1: Remove the dead import for the Razorpay button
+// import PaymentButton from '@/components/razorpay' 
+import { PhonePeButton } from '@/components/phonepe-button' // Step 2: Import our new PhonePe button
 
+// ... (The rest of the component remains the same until the success state)
 // The questionnaire data
 const questionnaireData: Question[] = [
 	{
@@ -261,6 +266,7 @@ export default function QuestionnairePage() {
 		}
 	}, [success, isSubmitting])
 
+
 	// Render the success state
 	if (success || isSubmitting) {
 		return (
@@ -276,22 +282,30 @@ export default function QuestionnairePage() {
 								<CheckCircle className="h-12 w-12 text-primary" />
 							</div>
 							<p className="text-center text-muted-foreground">
-								We&apos;ll analyze your responses and create personalized contests tailored to your expertise and development style.
+								We'll analyze your responses and create personalized contests tailored to your expertise and development style.
 							</p>
 						</CardContent>
-						<CardFooter className="flex justify-center">
+						<CardFooter className="flex flex-col items-center justify-center space-y-2">
 							{success ? (
 								<>
 									{!fetchingCredits ? (
 										availableCredits > 0 ? (
 											<Button asChild>
-												<Link href={`/user/questionnaire/ai/${aiQuestionnaireId}`}>Next Part</Link>
+												<Link href={`/user/questionnaire/ai/${aiQuestionnaireId}`}>Use 1 Credit to Proceed</Link>
 											</Button>
 										) : (
-											<PaymentButton getAvailableCredits={getAvailableCreditsCallback} />
+                                            <>
+                                                <p className="text-sm text-muted-foreground">You have no credits left.</p>
+											    {/* Step 3: Replace the old button with our new PhonePe button */}
+											    <PhonePeButton amount={100} /> 
+                                                {/* Note: We need to decide on a price. Using 100 as a placeholder */}
+                                            </>
 										)
 									) : (
-										<Button disabled>Checking credits...</Button>
+										<Button disabled>
+                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                            Checking Credits...
+                                        </Button>
 									)}
 								</>
 							) : (
@@ -309,6 +323,8 @@ export default function QuestionnairePage() {
 		)
 	}
 
+
+	// ... (Rest of the component remains the same)
 	return (
 		<div className="flex min-h-screen flex-col">
 			<Dialog open={!hasAgreed} onOpenChange={() => router.push('/')}>
@@ -317,7 +333,7 @@ export default function QuestionnairePage() {
 						<DialogTitle>Are you ready to attempt the questionnaire?</DialogTitle>
 						<DialogDescription>
 							<span className="block w-full">
-								Click &quot;Yes&quot; to start. The timer will begin once you proceed. <br />
+								Click "Yes" to start. The timer will begin once you proceed. <br />
 								<span>Time remaining: {formatTime(timeRemaining)}</span>
 							</span>
 						</DialogDescription>

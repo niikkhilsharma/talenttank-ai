@@ -6,6 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { buttonVariants } from './ui/button'
 import { UserRound } from 'lucide-react'
 import { signOut } from 'next-auth/react'
+import Image from 'next/image'
 
 export function AdminNav() {
 	const pathname = usePathname()
@@ -27,9 +28,7 @@ export function AdminNav() {
 		<header className="border-b sticky top-0 z-50 backdrop-blur">
 			<div className="container mx-auto p-4 sm:px-0 flex justify-between items-center">
 				<Link href={'/'}>
-					<h1 className="text-lg sm:text-xl font-bold">
-						Admin <br className="sm:hidden" /> Dashboard
-					</h1>
+					<Image src={'/assets/images/logo.png'} width={1024} height={1024} className="w-16 h-16" alt="Talentank AI" />
 				</Link>
 				<nav className="flex items-center space-x-4 lg:space-x-6">
 					{routes.map(route => (

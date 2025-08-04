@@ -1,8 +1,9 @@
 'use client'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Menu, Brain, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function MobileNav() {
 	const [open, setOpen] = useState(false)
@@ -17,10 +18,9 @@ export default function MobileNav() {
 				<div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm">
 					<div className="fixed inset-y-0 right-0 w-full max-w-xs border-l bg-background p-6 shadow-lg">
 						<div className="flex items-center justify-between">
-							<div className="flex items-center gap-2">
-								<Brain className="h-6 w-6 text-primary" />
-								<span className="text-xl font-bold">QuizGenius</span>
-							</div>
+							<Link href={'/'} className="flex items-center gap-2">
+								<Image src={'/assets/images/logo.png'} width={1024} height={1024} className="w-16 h-16" alt="Talentank AI" />
+							</Link>
 							<Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
 								<X className="h-5 w-5" />
 								<span className="sr-only">Close menu</span>
