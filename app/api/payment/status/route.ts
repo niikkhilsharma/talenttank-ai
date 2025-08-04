@@ -1,44 +1,88 @@
-// C:\PERSONAL FILES\SANDBOX\WEB PROJECTS\TALENTTANK-AI\app\api\payment\status\route.ts
-// This route handles the POST redirect from PhonePe and converts it to a GET
-// redirect that the user's browser can handle, showing a proper status page.
-
+// app/api/payment/status/[transactionId]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
+import crypto from 'crypto';
+import { auth } from '@/auth';
+import prisma from '@/lib/prisma/prisma';
 
-export async function POST(req: NextRequest) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { transactionId: string } }
+) {
   try {
-    // PhonePe sends the transaction data in the request body as form data
-    const formData = await req.formData();
-    
-    const transactionId = formData.get('merchantTransactionId') as string;
-    const code = formData.get('code') as string; // e.g., 'PAYMENT_SUCCESS'
+    const { transactionId } = params;
 
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL;
-
-    if (!appUrl) {
-      // Fallback in case the environment variable is not set
-      throw new Error("NEXT_PUBLIC_APP_URL is not defined in .env file");
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ success: false, error: 'Not authenticated.' }, { status: 401 });
     }
 
-    // The base URL of your frontend status page (e.g., /user/all-reports or a dedicated status page)
-    const redirectUrl = new URL('/user/all-reports', appUrl);
+    const paymentRecord = await prisma.payment.findUnique({
+      where: { providerPaymentId: transactionId },
+    });
 
-    // Append the transaction details as query parameters for the frontend to use
-    if (transactionId) {
-      redirectUrl.searchParams.set('transactionId', transactionId);
-    }
-    if (code) {
-        redirectUrl.searchParams.set('status', code);
+    if (!paymentRecord || paymentRecord.userId !== session.user.id) {
+      return NextResponse.json({ success: false, error: 'Payment not found or unauthorized.' }, { status: 404 });
     }
 
-    // Redirect the user's browser to the new URL
-    // e.g., http://localhost:3000/user/all-reports?transactionId=...&status=PAYMENT_SUCCESS
-    return NextResponse.redirect(redirectUrl);
+    if (paymentRecord.status !== 'PENDING') {
+      return NextResponse.json({
+        success: true,
+        status: paymentRecord.status,
+        amount: paymentRecord.amount,
+      });
+    }
 
+    const merchantId = process.env.PHONEPE_CLIENT_ID!;
+    const saltKey = process.env.PHONEPE_CLIENT_SECRET!;
+    const saltIndex = process.env.PHONEPE_CLIENT_VERSION || '1';
+
+    const apiEndpoint = `/pg/v1/status/${merchantId}/${transactionId}`;
+    const phonePeStatusUrl =
+      process.env.PHONEPE_ENV === 'PRODUCTION'
+        ? `https://api.phonepe.com/apis/hermes${apiEndpoint}`
+        : `https://api-test.phonepe.com/apis/hermes${apiEndpoint}`;
+
+    const stringToHash = apiEndpoint + saltKey;
+    const sha256 = crypto.createHash('sha256').update(stringToHash).digest('hex');
+    const xVerify = `${sha256}###${saltIndex}`;
+
+    const response = await fetch(phonePeStatusUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-VERIFY': xVerify,
+        'X-MERCHANT-ID': merchantId,
+        accept: 'application/json',
+      },
+    });
+
+    const data = await response.json();
+
+    if (data.success && data.code === 'PAYMENT_SUCCESS') {
+      const updated = await prisma.payment.update({
+        where: { providerPaymentId: transactionId },
+        data: {
+          status: 'COMPLETED',
+          paymentMethod: data.data.paymentInstrument?.type || 'UNKNOWN',
+        },
+      });
+
+      return NextResponse.json({ success: true, status: updated.status });
+    } else if (
+      data.success &&
+      (data.code === 'PAYMENT_ERROR' || data.code === 'TRANSACTION_NOT_FOUND')
+    ) {
+      await prisma.payment.update({
+        where: { providerPaymentId: transactionId },
+        data: { status: 'FAILED' },
+      });
+
+      return NextResponse.json({ success: true, status: 'FAILED' });
+    }
+
+    return NextResponse.json({ success: true, status: 'PENDING' });
   } catch (error) {
-    console.error("Error in PhonePe redirect handler:", error);
-    // Redirect to a generic error page if something goes wrong
-    const errorRedirectUrl = new URL('/user/all-reports', process.env.NEXT_PUBLIC_APP_URL || req.url);
-    errorRedirectUrl.searchParams.set('error', 'processing_failed');
-    return NextResponse.redirect(errorRedirectUrl);
+    console.error('Error fetching payment status:', error);
+    return NextResponse.json({ success: false, error: 'Internal Server Error' }, { status: 500 });
   }
 }
