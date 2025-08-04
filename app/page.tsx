@@ -153,6 +153,7 @@ export default function LandingPage() {
                 </h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed">
                   Choose the plan that's right for you and start improving today.
+                  
                 </p>
               </div>
             </div>
