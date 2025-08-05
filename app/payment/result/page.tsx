@@ -7,19 +7,24 @@ import { useSearchParams, useRouter } from 'next/navigation';
 export default function PaymentResult() {
   const params = useSearchParams();
   const router = useRouter();
-  const orderId = params.get('orderId');
+
+  const [orderId, setOrderId] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!orderId) {
+    const id = params.get('orderId');
+    setOrderId(id);
+
+    if (!id) {
       setStatus('ERROR');
       setLoading(false);
       return;
     }
+
     (async () => {
       try {
-        const resp = await axios.get(`/api/phonepe/status/${orderId}`);
+        const resp = await axios.get(`/api/phonepe/status/${id}`);
         setStatus(resp.data.state ?? 'ERROR');
       } catch {
         setStatus('ERROR');
@@ -27,7 +32,7 @@ export default function PaymentResult() {
         setLoading(false);
       }
     })();
-  }, [orderId]);
+  }, [params]);
 
   if (!orderId) return <p>Invalid request</p>;
   if (loading) return <p>Loading payment status…</p>;
