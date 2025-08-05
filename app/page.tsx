@@ -14,29 +14,13 @@ import {
 import TestimonialCard from "@/components/testimonial-card";
 import FeatureCard from "@/components/feature-card";
 import PricingCard from "@/components/pricing-card";
-import { useState } from "react";
-import Script from "next/script";
+import { usePhonePePayment } from "@/app/_hooks/usePhonePePayment";
 
 export default function LandingPage() {
-  const [isSdkReady, setIsSdkReady] = useState(false);
+  const { initiatePayment, loading } = usePhonePePayment();
 
   return (
     <div className="flex min-h-screen flex-col">
-      {/* Load PhonePe SDK */}
-      <Script
-        id="phonepe-checkout-sdk"
-        src="https://mercury.phonepe.com/web/bundle/checkout.js"
-        strategy="afterInteractive"
-        onReady={() => {
-          console.log("PhonePe SDK loaded.");
-          setIsSdkReady(true);
-        }}
-        onError={(e) => {
-          console.error("Failed to load PhonePe SDK", e);
-          alert("Failed to load payment gateway. Please refresh.");
-        }}
-      />
-
       <main className="flex-1 mx-auto">
         {/* Hero Section */}
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
@@ -153,7 +137,6 @@ export default function LandingPage() {
                 </h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed">
                   Choose the plan that's right for you and start improving today.
-                  
                 </p>
               </div>
             </div>
@@ -161,7 +144,6 @@ export default function LandingPage() {
               <PricingCard
                 title="Professional"
                 price="₹599"
-                amount={599}
                 description="Ideal for serious learners"
                 features={[
                   "Unlimited contests",
@@ -172,7 +154,8 @@ export default function LandingPage() {
                 ]}
                 buttonText="Subscribe Now"
                 highlighted
-                sdkReady={isSdkReady}
+                onClick={() => initiatePayment(599)}
+                loading={loading}
               />
             </div>
           </div>

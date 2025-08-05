@@ -1,5 +1,3 @@
-// C:\PERSONAL FILES\SANDBOX\WEB PROJECTS\TALENTTANK-AI\app\user\questionnaire\original\page.tsx
-
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
@@ -16,11 +14,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { toast } from 'sonner'
 import { Question } from '@/types/questions'
 import { useRouter } from 'next/navigation'
-// Step 1: Remove the dead import for the Razorpay button
-// import PaymentButton from '@/components/razorpay' 
-import { PhonePeButton } from '@/components/phonepe-button' // Step 2: Import our new PhonePe button
 
-// ... (The rest of the component remains the same until the success state)
 // The questionnaire data
 const questionnaireData: Question[] = [
 	{
@@ -113,12 +107,9 @@ export default function QuestionnairePage() {
 		async (isAutoSubmit = false) => {
 			if (isSubmitting) return
 
-			// Check if all questions are answered
 			const unansweredQuestions = questionnaireData.filter(q => !answers[q.id])
 
 			if (isAutoSubmit && unansweredQuestions.length > 0) {
-				// For auto-submit, we'll submit whatever is completed
-
 				toast.warning(`Time's up!`, {
 					description: `Submitting your questionnaire with ${
 						totalQuestions - unansweredQuestions.length
@@ -126,7 +117,6 @@ export default function QuestionnairePage() {
 				})
 			}
 
-			// Format the answers to match the expected API structure
 			const formattedAnswers = questionnaireData.map(question => ({
 				id: question.id,
 				answer: answers[question.id] || '',
@@ -141,7 +131,6 @@ export default function QuestionnairePage() {
 			setError(null)
 
 			try {
-				// Replace with your actual API endpoint
 				const response = await fetch('/api/submit-questionnaire-answer', {
 					method: 'POST',
 					headers: {
@@ -159,7 +148,6 @@ export default function QuestionnairePage() {
 
 				const realResponse = await response.json()
 				setAiQuestionnaireId(realResponse.aiQuestionSaveResponse.assessmentId)
-				console.log(realResponse.aiQuestionSaveResponse.assessmentId, 'id from here')
 				setSuccess(true)
 				setIsSubmitting(false)
 			} catch (err) {
@@ -191,12 +179,10 @@ export default function QuestionnairePage() {
 	// Warning dialog effect
 	useEffect(() => {
 		if (timeRemaining === 180) {
-			// 3 minutes remaining
 			toast('3 minutes remaining', {
 				description: 'Please try to complete the questionnaire soon.',
 			})
 		} else if (timeRemaining === 60) {
-			// 1 minute remaining
 			setShowTimeWarning(true)
 			toast.warning('1 minute remaining!', {
 				description: 'The form will be automatically submitted when time expires.',
@@ -232,18 +218,14 @@ export default function QuestionnairePage() {
 	const isLastQuestion = currentStep === totalQuestions - 1
 
 	const handleSubmit = () => {
-		console.log(answers)
-
 		const newObj: Array<Question & { answer: string }> = []
 
 		questionnaireData.forEach(ques => {
 			if (answers[ques.id]) {
 				const quesWithAns: Question & { answer: string } = { ...ques, answer: answers[ques.id] }
 				newObj.push(quesWithAns)
-				console.log(quesWithAns)
 			}
 		})
-		console.log(newObj)
 
 		submitForm(false)
 	}
@@ -255,7 +237,6 @@ export default function QuestionnairePage() {
 
 		const response = await fetch('/api/avail-credits')
 		const data = await response.json()
-		console.log(data)
 		setAvailableCredits(data.availableCredits)
 		setFetchingCredits(false)
 	}
@@ -265,7 +246,6 @@ export default function QuestionnairePage() {
 			getAvailableCreditsCallback()
 		}
 	}, [success, isSubmitting])
-
 
 	// Render the success state
 	if (success || isSubmitting) {
@@ -294,18 +274,13 @@ export default function QuestionnairePage() {
 												<Link href={`/user/questionnaire/ai/${aiQuestionnaireId}`}>Use 1 Credit to Proceed</Link>
 											</Button>
 										) : (
-                                            <>
-                                                <p className="text-sm text-muted-foreground">You have no credits left.</p>
-											    {/* Step 3: Replace the old button with our new PhonePe button */}
-											    <PhonePeButton amount={100} /> 
-                                                {/* Note: We need to decide on a price. Using 100 as a placeholder */}
-                                            </>
+											<p className="text-sm text-muted-foreground">You have no credits left.</p>
 										)
 									) : (
 										<Button disabled>
-                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                            Checking Credits...
-                                        </Button>
+											<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+											Checking Credits...
+										</Button>
 									)}
 								</>
 							) : (
@@ -323,8 +298,6 @@ export default function QuestionnairePage() {
 		)
 	}
 
-
-	// ... (Rest of the component remains the same)
 	return (
 		<div className="flex min-h-screen flex-col">
 			<Dialog open={!hasAgreed} onOpenChange={() => router.push('/')}>
@@ -414,18 +387,18 @@ export default function QuestionnairePage() {
 						)}
 
 						{currentQuestion.type === 'input_text' && (
-							<Textarea
-								value={answers[currentQuestion.id] || ''}
-								onChange={e => handleAnswerChange(e.target.value)}
-								placeholder={currentQuestion.placeholder}
-								className="min-h-[150px]"
-								disabled={isSubmitting}
-								onPaste={e => e.preventDefault()}
-								maxLength={200}
-							/>
-						)}
-						{currentQuestion.type === 'input_text' && (
-							<p className="text-xs text-muted-foreground mt-1">{answers[currentQuestion.id]?.length || 0}/200</p>
+							<>
+								<Textarea
+									value={answers[currentQuestion.id] || ''}
+									onChange={e => handleAnswerChange(e.target.value)}
+									placeholder={currentQuestion.placeholder}
+									className="min-h-[150px]"
+									disabled={isSubmitting}
+									onPaste={e => e.preventDefault()}
+									maxLength={200}
+								/>
+								<p className="text-xs text-muted-foreground mt-1">{answers[currentQuestion.id]?.length || 0}/200</p>
+							</>
 						)}
 					</CardContent>
 					<CardFooter className="flex justify-between">

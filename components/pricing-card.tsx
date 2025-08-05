@@ -1,27 +1,35 @@
-// components/pricing-card.tsx
+'use client';
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { PhonePeSDKButton } from './phonepe-sdk-button';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 
 interface PricingCardProps {
   title: string;
   price: string;
-  amount: number;
   description: string;
   features: string[];
   buttonText: string;
   highlighted?: boolean;
-  sdkReady: boolean;
+  onClick?: () => void;
+  loading?: boolean;
 }
 
 export default function PricingCard({
   title,
   price,
-  amount,
   description,
   features,
+  buttonText,
   highlighted = false,
-  sdkReady,
+  onClick,
+  loading,
 }: PricingCardProps) {
   return (
     <Card className={`flex flex-col ${highlighted ? 'border-primary shadow-lg scale-105' : ''}`}>
@@ -42,8 +50,10 @@ export default function PricingCard({
           ))}
         </ul>
       </CardContent>
-      <CardFooter className="w-full">
-        <PhonePeSDKButton amount={amount} sdkReady={sdkReady} />
+      <CardFooter>
+        <Button className="w-full" onClick={onClick} disabled={loading}>
+          {loading ? 'Processing...' : buttonText}
+        </Button>
       </CardFooter>
     </Card>
   );
