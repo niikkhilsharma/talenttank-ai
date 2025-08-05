@@ -13,14 +13,17 @@ export default function PaymentResult() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // ✅ Access search params inside useEffect (no top-level get)
     const id = params.get('orderId');
-    setOrderId(id);
 
     if (!id) {
+      setOrderId(null);
       setStatus('ERROR');
       setLoading(false);
       return;
     }
+
+    setOrderId(id);
 
     (async () => {
       try {
@@ -34,7 +37,7 @@ export default function PaymentResult() {
     })();
   }, [params]);
 
-  if (!orderId) return <p>Invalid request</p>;
+  if (!orderId && !loading) return <p>Invalid request</p>;
   if (loading) return <p>Loading payment status…</p>;
 
   return (
