@@ -92,6 +92,7 @@ export async function POST(
         { status: error.httpStatusCode ?? 500 }
       );
     }
+    /// errors log
 
     console.error('🔥 Unexpected error during pay:', error);
     const msg =
