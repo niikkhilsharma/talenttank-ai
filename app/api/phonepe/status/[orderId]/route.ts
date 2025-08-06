@@ -6,6 +6,7 @@ import {
   OrderStatusResponse,
   PhonePeException,
 } from 'pg-sdk-node';
+import { getPhonePeClient } from '@/lib/phonepeClient';
 
 type StatusResponseBody = {
   orderId?: string;
@@ -15,12 +16,7 @@ type StatusResponseBody = {
 };
 
 // Initialize the PhonePe SDK client
-const client = StandardCheckoutClient.getInstance(
-  process.env.PHONEPE_CLIENT_ID!,
-  process.env.PHONEPE_CLIENT_SECRET!,
-  parseInt(process.env.PHONEPE_CLIENT_VERSION!, 10),
-  process.env.PHONEPE_ENV === 'production' ? Env.PRODUCTION : Env.SANDBOX
-);
+const client = getPhonePeClient();
 
 export async function GET(
   req: NextRequest,
