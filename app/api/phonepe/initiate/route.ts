@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { randomUUID } from 'crypto';
 import {
-  StandardCheckoutClient,
-  Env,
   StandardCheckoutPayRequest,
   StandardCheckoutPayResponse,
   PhonePeException,
@@ -21,10 +19,6 @@ console.log("🚀 PhonePe ENV Vars", {
   VERSION: process.env.PHONEPE_CLIENT_VERSION,
   ENV: process.env.PHONEPE_ENV
 });
-
-const client = getPhonePeClient();
-const resp: StandardCheckoutPayResponse = await client.pay(payRequest);
-
 
 export async function POST(
   req: NextRequest
@@ -66,6 +60,7 @@ export async function POST(
   console.debug('📬 Request built:', payRequest);
 
   try {
+    const client = getPhonePeClient();
     const resp: StandardCheckoutPayResponse = await client.pay(payRequest);
     console.debug('📨 SDK response:', resp);
 
@@ -97,7 +92,6 @@ export async function POST(
         { status: error.httpStatusCode ?? 500 }
       );
     }
-    /// errors log
 
     console.error('🔥 Unexpected error during pay:', error);
     const msg =
