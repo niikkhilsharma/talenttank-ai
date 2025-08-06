@@ -2,17 +2,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { StandardCheckoutClient, CallbackResponse, PhonePeException, Env } from 'pg-sdk-node';
 import crypto from 'crypto';
+import { getPhonePeClient } from '@/lib/phonepeClient';
 
 const USERNAME = process.env.PHONEPE_WEBHOOK_USERNAME!;
 const PASSWORD = process.env.PHONEPE_WEBHOOK_PASSWORD!;
 
 // Initialize the PhonePe SDK client
-const client = StandardCheckoutClient.getInstance(
-  process.env.PHONEPE_CLIENT_ID!,
-  process.env.PHONEPE_CLIENT_SECRET!,
-  parseInt(process.env.PHONEPE_CLIENT_VERSION!, 10),
-  process.env.PHONEPE_ENV === 'production' ? Env.PRODUCTION : Env.SANDBOX
-);
+
+const client = getPhonePeClient();
 
 export async function POST(req: NextRequest): Promise<NextResponse<{ received?: boolean; error?: string }>> {
   const auth = req.headers.get('authorization') ?? '';
