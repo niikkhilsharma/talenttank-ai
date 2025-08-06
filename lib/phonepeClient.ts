@@ -1,19 +1,21 @@
-import {
-  StandardCheckoutClient,
-  Env,
-} from 'pg-sdk-node';
+// lib/phonepeClient.ts
 
-let phonePeClient: StandardCheckoutClient | null = null;
+import { StandardCheckoutClient, Env } from 'pg-sdk-node';
+
+declare global {
+  // eslint-disable-next-line no-var
+  var phonePeClient: StandardCheckoutClient | undefined;
+}
 
 export function getPhonePeClient(): StandardCheckoutClient {
-  if (!phonePeClient) {
+  if (!globalThis.phonePeClient) {
     console.log('🚀 Initializing PhonePe Client...');
-    phonePeClient = StandardCheckoutClient.getInstance(
+    globalThis.phonePeClient = StandardCheckoutClient.getInstance(
       process.env.PHONEPE_CLIENT_ID!,
       process.env.PHONEPE_CLIENT_SECRET!,
       parseInt(process.env.PHONEPE_CLIENT_VERSION!, 10),
       process.env.PHONEPE_ENV?.toLowerCase() === 'production' ? Env.PRODUCTION : Env.SANDBOX
     );
   }
-  return phonePeClient;
+  return globalThis.phonePeClient;
 }
