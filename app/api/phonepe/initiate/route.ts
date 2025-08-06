@@ -14,6 +14,13 @@ type PayResponseBody = {
   error?: string;
 };
 
+console.log("🚀 PhonePe ENV Vars", {
+  ID: process.env.PHONEPE_CLIENT_ID,
+  SECRET: process.env.PHONEPE_CLIENT_SECRET,
+  VERSION: process.env.PHONEPE_CLIENT_VERSION,
+  ENV: process.env.PHONEPE_ENV
+});
+
 const client = StandardCheckoutClient.getInstance(
   process.env.PHONEPE_CLIENT_ID!,
   process.env.PHONEPE_CLIENT_SECRET!,
