@@ -1,10 +1,13 @@
-import { StandardCheckoutClient, Env } from 'pg-sdk-node';
+import {
+  StandardCheckoutClient,
+  Env,
+} from 'pg-sdk-node';
 
 let phonePeClient: StandardCheckoutClient | null = null;
 
-export function getPhonePeClient() {
+export function getPhonePeClient(): StandardCheckoutClient {
   if (!phonePeClient) {
-    console.log("🚀 Initializing PhonePe Client");
+    console.log('🚀 Initializing PhonePe Client...');
     phonePeClient = StandardCheckoutClient.getInstance(
       process.env.PHONEPE_CLIENT_ID!,
       process.env.PHONEPE_CLIENT_SECRET!,
