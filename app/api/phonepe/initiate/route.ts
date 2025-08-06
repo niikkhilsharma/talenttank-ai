@@ -7,6 +7,7 @@ import {
   StandardCheckoutPayResponse,
   PhonePeException,
 } from 'pg-sdk-node';
+import { getPhonePeClient } from '@/lib/phonepeClient';
 
 type PayResponseBody = {
   orderId?: string;
@@ -21,12 +22,9 @@ console.log("🚀 PhonePe ENV Vars", {
   ENV: process.env.PHONEPE_ENV
 });
 
-const client = StandardCheckoutClient.getInstance(
-  process.env.PHONEPE_CLIENT_ID!,
-  process.env.PHONEPE_CLIENT_SECRET!,
-  parseInt(process.env.PHONEPE_CLIENT_VERSION!, 10),
-  process.env.PHONEPE_ENV?.toLowerCase() === 'production' ? Env.PRODUCTION : Env.SANDBOX
-);
+const client = getPhonePeClient();
+const resp: StandardCheckoutPayResponse = await client.pay(payRequest);
+
 
 export async function POST(
   req: NextRequest
