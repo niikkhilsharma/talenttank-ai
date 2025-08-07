@@ -2,17 +2,29 @@
 
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react' // If you're using next-auth
 
 export function PhonePeButton({ amount }: { amount: number }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
+
+  // This hook comes from next-auth, use your own logic if you're not using it
+  const { data: session, status } = useSession()
+  const isUserRegistered = !!session?.user // Adjust according to your logic
 
   const initiatePayment = async (amount: number) => {
+    if (!isUserRegistered) {
+      router.push('/register')
+      return
+    }
+
     setLoading(true)
     setError(null)
 
     try {
-      // TODO: Add PhonePe payment integration logic here
+      // Your payment logic here
       alert(`Initiating PhonePe payment of ₹${amount}`)
     } catch (err) {
       setError('Payment failed. Please try again.')
