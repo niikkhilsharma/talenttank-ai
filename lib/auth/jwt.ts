@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-very-secret-key'
+const JWT_SECRET = process.env.AUTH_SECRET || 'your-very-secret-key'
 
 export function generateResetToken(email: string) {
 	return jwt.sign({ email }, JWT_SECRET, { expiresIn: '15m' }) // 15 min validity
