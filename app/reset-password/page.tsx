@@ -1,4 +1,5 @@
 import ResetPasswordForm from '../forgot-password/verify-forget-pswd-link-form'
+import { Suspense } from 'react'
 
 export default function ResetPasswordPage() {
 	return (
@@ -8,7 +9,9 @@ export default function ResetPasswordPage() {
 					<h1 className="text-3xl font-bold">Reset Password</h1>
 					<p className="text-gray-500 dark:text-gray-400">Enter your email address to reset your password.</p>
 				</div>
-				<ResetPasswordForm />
+				<Suspense fallback={<div>Loading...</div>}>
+					<ResetPasswordForm />
+				</Suspense>
 			</div>
 		</div>
 	)
