@@ -37,7 +37,7 @@ export default auth(async function middleware(request) {
 			return NextResponse.redirect(newUrl, { headers })
 		}
 
-		const newUrl = new URL('/api/auth/signin', request.nextUrl.origin)
+		const newUrl = new URL('/register', request.nextUrl.origin)
 		return NextResponse.redirect(newUrl, { headers })
 	}
 

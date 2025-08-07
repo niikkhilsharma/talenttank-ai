@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
 			{ status: 201 }
 		)
 	} catch (error) {
-		console.error('Registration error:', error)
+		console.log('Registration error:', error)
 
 		if (error instanceof z.ZodError) {
 			return NextResponse.json({ message: 'Validation error', errors: error.errors }, { status: 400 })

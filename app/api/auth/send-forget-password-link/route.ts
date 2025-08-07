@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
 			from: 'Talentank <no-reply@talentank.in>',
 			to: [email],
 			subject: 'Hello world',
-			react: ForgetPasswordTemplate({ firstName: 'John', resetLink }),
+			react: ForgetPasswordTemplate({ firstName: user.firstName || '', resetLink }),
 		})
 
 		if (error) {
