@@ -12,12 +12,14 @@ export default function PaymentButton({ amount }: { amount: number }) {
   const router = useRouter();
 
   const handleClick = () => {
-    if (!session) {
+    // Check if user is not logged in or registered
+    if (!session || !session.user) {
       toast.error('Please register or log in to make a payment.');
       router.push('/register');
       return;
     }
 
+    // Only initiate payment if user is authenticated
     initiatePayment(amount);
   };
 
