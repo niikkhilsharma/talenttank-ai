@@ -46,19 +46,20 @@ export function LoginForm() {
 				redirect: false,
 			})
 
+			console.log('Login result:', result)
 			if (result?.error) {
 				throw new Error(result.error || 'Login failed')
 			}
 
-			toast('Login successful', {
+			toast.success('Login successful', {
 				description: 'You have been logged in successfully.',
 			})
 
 			router.push('/user/questionnaire/original')
 			router.refresh()
 		} catch (error) {
-			console.error('Login error:', error)
-			toast('Login failed', {
+			console.log('Login error:', error)
+			toast.error('Login failed', {
 				// description: error instanceof Error ? error.message : 'Invalid email or password.',
 				description: 'Invalid email or password.',
 			})
@@ -99,14 +100,12 @@ export function LoginForm() {
 				/>
 
 				<Button type="submit" className="w-full" disabled={isLoading}>
-					{isLoading ? (
+					{isLoading ?
 						<>
 							<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 							Logging in...
 						</>
-					) : (
-						'Login'
-					)}
+					:	'Login'}
 				</Button>
 
 				{/* <div className="text-center text-sm">

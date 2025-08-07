@@ -19,6 +19,7 @@ export default auth(async function middleware(request) {
 		'/toc',
 		'/privacy-policy',
 		'/refund-policy',
+		'/reset-password',
 	]
 
 	const headers = new Headers(request.headers)
