@@ -7,7 +7,7 @@ import { Button } from './ui/button'
 export default function Footer() {
 	return (
 		<>
-			<section className="w-full py-12 md:py-24 lg:py-32 border-t">
+{/* 			<section className="w-full py-12 md:py-24 lg:py-32 border-t">
 				<div className="container mx-auto">
 					<div className="flex flex-col items-center justify-center space-y-4 text-center">
 						<div className="space-y-2">
@@ -30,7 +30,7 @@ export default function Footer() {
 						</div>
 					</div>
 				</div>
-			</section>
+			</section> */}
 
 			<footer className="w-full border-t py-6 md:py-0 md:mb-4">
 				<div className="container flex flex-col mx-auto items-center justify-between gap-4 md:h-24 md:flex-row">
