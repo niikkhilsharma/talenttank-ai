@@ -230,6 +230,7 @@ export default function QuestionnairePage() {
 		submitForm(false)
 	}
 
+	
 	const getAvailableCreditsCallback = async () => {
 		setFetchingCredits(true)
 
@@ -239,7 +240,14 @@ export default function QuestionnairePage() {
 		const data = await response.json()
 		setAvailableCredits(data.availableCredits)
 		setFetchingCredits(false)
-	}
+
+		// 🔹 Show alert/toast when credits are 0
+		if (data?.availableCredits === 0) {
+			// console.log("Avl" , data.availableCredits || availableCredits)
+        toast.error('Please purchase a package! Your credits are 0')
+  }
+  }
+	
 
 	useEffect(() => {
 		if (success || isSubmitting) {
