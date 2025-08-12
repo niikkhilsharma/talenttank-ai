@@ -1,5 +1,5 @@
 'use client'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -7,10 +7,15 @@ import { AIQuestionnaireAnswers } from '@prisma/client'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Separator } from '@/components/ui/separator'
+import { Button } from '@/components/ui/button'
+import jsPDF from 'jspdf'
+import html2canvas from "html2canvas"
+import { useReactToPrint } from 'react-to-print'
 
 const ReportDescription = ({ assessmentId, aiAnalysis }: { assessmentId: string; aiAnalysis: AIQuestionnaireAnswers }) => {
 	console.log(aiAnalysis)
 	const router = useRouter()
+	const reportRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
 		if (!assessmentId) {
@@ -22,8 +27,98 @@ const ReportDescription = ({ assessmentId, aiAnalysis }: { assessmentId: string;
 		}
 	}, [assessmentId, router, toast])
 
+	
+// const handleDownload = async () => {
+//   if (!reportRef.current) {
+//     console.error("Report container not found!");
+//     return;
+//   }
+
+//   try {
+//     const html2canvas = (await import("html2canvas")).default;
+//     const { default: jsPDF } = await import("jspdf");
+
+//     const elements = reportRef.current.querySelectorAll("*");
+//     const originalStyles: { el: HTMLElement; color: string; backgroundColor: string }[] = [];
+
+//     elements.forEach((el) => {
+//       const computedStyle = window.getComputedStyle(el);
+
+//       // Replace unsupported 'oklch' colors with fallback
+//       const safeColor = (c: string) => (c.includes("oklch") ? "rgb(0,0,0)" : c);
+//       const safeBg = (bg: string) => (bg.includes("oklch") ? "rgb(255,255,255)" : bg);
+
+//       originalStyles.push({
+//         el,
+//         color: el.style.color,
+//         backgroundColor: el.style.backgroundColor,
+//       });
+
+//       el.style.color = safeColor(computedStyle.color);
+//       el.style.backgroundColor = safeBg(computedStyle.backgroundColor);
+//     });
+
+//     // Wait a tick for styles to apply
+//     await new Promise(r => setTimeout(r, 50));
+
+//     const canvas = await html2canvas(reportRef.current, {
+//       useCORS: true,
+//       scale: 2,
+//       scrollX: -window.scrollX,
+//       scrollY: -window.scrollY,
+//       windowWidth: document.documentElement.clientWidth,
+//       windowHeight: document.documentElement.clientHeight,
+//       logging: false,
+//     });
+
+//     // Restore original styles
+//     originalStyles.forEach(({ el, color, backgroundColor }) => {
+//       el.style.color = color;
+//       el.style.backgroundColor = backgroundColor;
+//     });
+
+//     const imgData = canvas.toDataURL("image/png");
+//     const pdf = new jsPDF("p", "mm", "a4");
+//     const pdfWidth = pdf.internal.pageSize.getWidth();
+//     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+//     let heightLeft = pdfHeight;
+//     let position = 0;
+
+//     pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
+//     heightLeft -= pdf.internal.pageSize.getHeight();
+
+//     while (heightLeft > 0) {
+//       position = heightLeft - pdfHeight;
+//       pdf.addPage();
+//       pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
+//       heightLeft -= pdf.internal.pageSize.getHeight();
+//     }
+
+//     pdf.save(`report-${assessmentId}.pdf`);
+//   } catch (error) {
+//     console.error("Error generating PDF:", error);
+//     toast.error("Something went wrong while generating the PDF.");
+//   }
+// };
+
+
+
+  const handlePrint = useReactToPrint({
+  contentRef: reportRef,
+  documentTitle: `report-${assessmentId}`,
+  onAfterPrint: () => toast.success('Report download initiated!'),
+})
+
+
 	return (
-		<div className="container mx-auto p-4 space-y-4">
+		<div className="container mx-auto p-4 space-y-4" >
+			<div className="flex justify-end">
+        <Button onClick={handlePrint} className="mb-4">
+          Download Report
+        </Button>
+      </div>
+            <div ref={reportRef}>
 			<Card>
 				<CardHeader>
 					<CardTitle>Summary & Recommendations</CardTitle>
@@ -149,6 +244,7 @@ const ReportDescription = ({ assessmentId, aiAnalysis }: { assessmentId: string;
 					</div>
 				</CardContent>
 			</Card>
+			</div>
 		</div>
 	)
 }
