@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎯 Talentank
 
-## Getting Started
+> AI-Powered Contests Tailored to Your Expertise
 
-First, run the development server:
+Talentank is an intelligent learning platform that delivers adaptive contest experiences designed for your profession and skill level. Engage in AI-powered challenges that help you grow, compete with peers, and track your professional development journey.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 🤖 AI-Tailored Questions
+Questions dynamically generated based on your profession, expertise level, and development goals to ensure relevant and targeted learning.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 📊 Adaptive Difficulty
+Contests automatically adjust difficulty based on your performance and progress, keeping you in the optimal learning zone.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 🏆 Peer Competitions
+Compete with professionals in your field to benchmark your knowledge and skills against industry peers.
 
-## Learn More
+### ⚡ Real-time Feedback
+Receive instant, detailed explanations and feedback to accelerate your development and understanding.
 
-To learn more about Next.js, take a look at the following resources:
+### 🎓 Skill Certification
+Earn certificates and badges to showcase your expertise and achievements on your professional profiles.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 📈 Progress Tracking
+Access comprehensive analytics to monitor your improvement over time and identify areas for growth.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🚀 How It Works
 
-## Deploy on Vercel
+1. **Create Your Profile**
+   - Share your profession, expertise level, and development goals
+   - Let our AI understand your learning needs
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. **Select a Contest**
+   - Choose from AI-recommended contests tailored to your profile
+   - Or create a custom challenge based on specific learning objectives
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. **Learn & Improve**
+   - Participate in adaptive contests
+   - Receive detailed feedback after each question
+   - Track your progress and skill development over time
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React, Next.js, Tailwind CSS
+- **Backend**: Node.js, Express
+- **Database**: PostgreSQL/MongoDB
+- **AI/ML**: OpenAI API, Custom ML models
+- **Authentication**: NextAuth.js
+- **Deployment**: Vercel
+
+## 📦 Installation
+
