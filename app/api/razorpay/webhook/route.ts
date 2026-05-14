@@ -1,4 +1,4 @@
-import crypto from 'crypto'
+import { createHmac } from 'node:crypto'
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma/prisma'
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
 		console.log(parsedBody)
 		const { event, payload } = parsedBody
 
-		const expectedSignature = crypto.createHmac('sha256', webhookSecret).update(rawBody).digest('hex')
+		const expectedSignature = createHmac('sha256', webhookSecret).update(rawBody).digest('hex')
 
 		if (signature !== expectedSignature) {
 			return NextResponse.json({ success: false, message: 'Invalid Webhook Signature' }, { status: 400 })
