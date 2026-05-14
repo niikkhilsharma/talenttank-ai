@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
-// @ts-ignore
 import './globals.css'
 import { Toaster } from '@/components/ui/sonner'
 import { Navbar } from '@/components/navbar'
@@ -42,7 +41,11 @@ export default async function RootLayout({
 				/>
 			</head>
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-				{user ? user.role === 'ADMIN' ? <AdminNav /> : <Navbar /> : <Navbar />}
+				{user ?
+					user.role === 'ADMIN' ?
+						<AdminNav />
+					:	<Navbar />
+				:	<Navbar />}
 				<main className="px-4">
 					<TanstackProvider>{children}</TanstackProvider>
 					<Footer />
