@@ -8,7 +8,7 @@ import prisma from '@/lib/prisma/prisma'
 import { Question } from '@/types/questions'
 
 const llm = new ChatOpenAI({
-	modelName: 'o3-mini',
+	modelName: 'gpt-5-nano',
 })
 
 export async function POST(request: Request) {
@@ -87,7 +87,7 @@ export async function POST(request: Request) {
 				success: false,
 				message: 'Failed to generate follow-up questions',
 			},
-			{ status: 500 }
+			{ status: 500 },
 		)
 	}
 }

@@ -31,8 +31,8 @@ export function LoginForm() {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			email: '',
-			password: '',
+			email: 'niikkhilsharma@gmail.com',
+			password: '#Nikhil@12',
 		},
 	})
 
@@ -99,14 +99,12 @@ export function LoginForm() {
 				/>
 
 				<Button type="submit" className="w-full" disabled={isLoading}>
-					{isLoading ? (
+					{isLoading ?
 						<>
 							<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 							Logging in...
 						</>
-					) : (
-						'Login'
-					)}
+					:	'Login'}
 				</Button>
 
 				{/* <div className="text-center text-sm">

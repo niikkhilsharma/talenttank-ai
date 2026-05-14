@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-import crypto from 'crypto'
+import { createHmac } from 'node:crypto'
 
 const generatedSignature = (razorpayOrderId: string, razorpayPaymentId: string) => {
 	const keySecret = process.env.key_secret
 	if (!keySecret) {
 		throw new Error('Razorpay key secret is not defined in environment variables.')
 	}
-	const sig = crypto
-		.createHmac('sha256', keySecret)
+	const sig = createHmac('sha256', keySecret)
 		.update(razorpayOrderId + '|' + razorpayPaymentId)
 		.digest('hex')
 	return sig
