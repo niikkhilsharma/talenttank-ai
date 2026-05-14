@@ -48,7 +48,7 @@ export default auth(async function middleware(request) {
 
 export const config = {
 	matcher: [
-		'/((?!api/auth|auth|images|_next/image/*|_next/static|auth/*|_next/image|favicon.ico|api/cloudinary/image-upload|^/$).+)',
+		'/((?!api/auth|auth|_next/static|_next/image|assets|favicon.ico|api/cloudinary/image-upload|api/razorpay/webhook).+)',
 		'/',
 	],
 }
